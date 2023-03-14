@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tournaments</title>
+  <th:import namespace="org.thymeleaf.extras.springsecurity5.util" />
+  <style>
+    table {
+      border-collapse: collapse;
+      border: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    th {
+      border-bottom: 1px solid #eee;
+      color: #888;
+      font-size: 14px;
+      font-weight: normal;
+      padding: 4px 8px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    td {
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+      padding: 4px 8px;
+    }
+
+    a {
+      color: #000;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #222;
+      text-decoration: underline;
+    }
+
+    th:first-child {
+      width: 500px;
+    }
+
+    .filter {
+      font-size: 14px;
+      font-weight: normal;
+      margin: 10px 0;
+    }
+
+    .filter label {
+      margin-right: 10px;
+      font-size: 14px;
+      font-weight: normal;
+      display: none;
+    }
+
+    .filter select {
+      font-size: 14px;
+      font-weight: normal;
+      margin-bottom: 5px;
+    }
+
+    .filter select option {
+      font-size: 14px;
+      font-weight: normal;
+      border-color: #888;
+    }
+  </style>
+</head>
+<body>
+<div class="filter">
+  <select id="location-filter" onchange="filterByLocation(this.value)">
+    <option value="">All Locations</option>
+    <option value="Raptors Knoll">Raptors Knoll</option>
+    <option value="Burnaby">Burnaby</option>
+    <option value="Squamish">Squamish</option>
+    <option value="Kayak Point">Kayak Point</option>
+    <option value=""></option>
+  </select>
+</div>
+<table>
+  <tr>
+    <th>Competition</th>
+    <th>Location</th>
+    <th>Date</th>
+    <th>Registrants</th>
+    <th>Type</th>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/GIGOGR_at_Raptors_Day_1_2023">GIGOGR @ Raptors - Day 1</a>
+    </td>
+    <td class="row-location">Raptors Knoll</td>
+    <td>March 18 Saturday</td>
+    <td>72</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/GIGOGR_at_Raptors_Day_2_2023">GIGOGR @ Raptors - Day 2</a>
+    </td>
+    <td class="row-location">Raptors Knoll</td>
+    <td>March 19 Sunday</td>
+    <td>72</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Fundraiser_for_Womens_Open_at_Raptors_2023">Fundraiser for Women&#39;s Open at Raptors</a>
+    </td>
+    <td class="row-location">Raptors Knoll</td>
+    <td>April 15 Saturday</td>
+    <td>72</td>
+    <td>Doubles</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Women_and_Junior_Girls_at_Raptors_2023">Women&#39;s Open at Raptors</a>
+    </td>
+    <td class="row-location">Raptors Knoll</td>
+    <td>May 13 Saturday</td>
+    <td>28</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_BC_Junior_Disc_Golf_Championship_2023">2023 BC Junior Disc Golf Championship</a>
+    </td>
+    <td class="row-location">Raptors Knoll</td>
+    <td>May 19-21 Fri-Sun</td>
+    <td>72</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/BC_Open_2023">BC Open presented by Discmania</a>
+    </td>
+    <td class="row-location">Raptors Knoll</td>
+    <td>July 21-23 Fri-Sun</td>
+    <td>490</td>
+    <td>A-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/4th_Annual_Gerry_Boomer_Memorial_2023">4th Annual Gerry Boomer Memorial</a>
+    </td>
+    <td class="row-location">Burnaby</td>
+    <td>March 18 Saturday</td>
+    <td>81</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/GIGOGR_at_Legacy_Day_1_2023">GIGOGR @ Legacy - Day 1</a>
+    </td>
+    <td class="row-location">Squamish</td>
+    <td>April 22 Saturday</td>
+    <td>0</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/GIGOGR_at_Legacy_Day_2_2023">GIGOGR @ Legacy - Day 2</a>
+    </td>
+    <td class="row-location">Squamish</td>
+    <td>April 23 Sunday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Placeholder_2023">Sea to Sky Open - 2 days, 2 courses, 4 rounds</a>
+    </td>
+    <td class="row-location">Squamish</td>
+    <td>August 19-20 Sat-Sun</td>
+    <td>0</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/DropKick_Mulligans_2023">DropKick Mulligans</a>
+    </td>
+    <td class="row-location">Kayak Point</td>
+    <td>March 17 Friday</td>
+    <td>100</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Kayak_Point_DGR_Intro_to_Disc_Golf_Clinic_2023">Kayak Point DGR Intro to Disc Golf Clinic</a>
+    </td>
+    <td class="row-location">Kayak Point</td>
+    <td>March 25 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Blue_Course_Work_Party_2_2023">Blue Course Work Party #2</a>
+    </td>
+    <td class="row-location">Kayak Point</td>
+    <td>March 25 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Chains_Addiction_2023">Chains Addiction</a>
+    </td>
+    <td class="row-location">Kayak Point</td>
+    <td>April 8 Saturday</td>
+    <td>90</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Kayak_Point_DGR_Intro_to_Disc_Golf_Clinic_2_2023">Kayak Point DGR Intro to Disc Golf Clinic #2</a>
+    </td>
+    <td class="row-location">Kayak Point</td>
+    <td>April 15 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Kayak_Point_DGR_Putt_and_Approach_Clinic_2023">Kayak Point DGR Putt and Approach Clinic</a>
+    </td>
+    <td class="row-location">Kayak Point</td>
+    <td>April 22 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Kayak_Point_DGR_Driving_Clinic_2023">Kayak Point DGR Driving Clinic</a>
+    </td>
+    <td class="row-location">Kayak Point</td>
+    <td>April 29 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Queens_of_Kayak_Womens_Event_2023">Queens of Kayak (Women&#39;s Event)</a>
+    </td>
+    <td class="row-location">Kayak Point</td>
+    <td>May 14 Sunday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/NXNW_2023">NXNW (North by Northwest)</a>
+    </td>
+    <td class="row-location">Kayak Point</td>
+    <td>May 27-29 Sat-Mon</td>
+    <td>69</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Rage_Against_The_Cage_Doubles_2023">Rage Against The Cage Doubles</a>
+    </td>
+    <td class="row-location">Kayak Point</td>
+    <td>June 11 Sunday</td>
+    <td>0</td>
+    <td>DoublesX</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Kayak_Point_Open_2023">Kayak Point Open</a>
+    </td>
+    <td class="row-location">Kayak Point</td>
+    <td>July 7-9 Fri-Sun</td>
+    <td>0</td>
+    <td>A-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Throwchella_2023">Throwchella</a>
+    </td>
+    <td class="row-location">Kayak Point</td>
+    <td>August 12-13 Sat-Sun</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/MegaDeth_Putt_2023">MegaDeth Putt</a>
+    </td>
+    <td class="row-location">Kayak Point</td>
+    <td>October 28 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Leftover_Turnover_lll_The_Rise_of_the_Turducken_2023">Leftover Turnover lll: The Rise of the Turducken</a>
+    </td>
+    <td class="row-location">Kayak Point</td>
+    <td>November 24 Friday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Simon_and_Parfunkel_Doubles_2023">Simon &amp; Parfunkel Doubles</a>
+    </td>
+    <td class="row-location">Kayak Point</td>
+    <td>December 17 Sunday</td>
+    <td>0</td>
+    <td>DoublesX</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_Dan_Walker_Classic_Singles_2023">2023 Dan Walker Classic - Singles</a>
+    </td>
+    <td class="row-location"></td>
+    <td>March 25 Saturday</td>
+    <td>45</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_Dan_Walk_Classic_Doubles_2023">2023 Dan Walker Classic - Doubles</a>
+    </td>
+    <td class="row-location"></td>
+    <td>March 26 Sunday</td>
+    <td>38</td>
+    <td>Doubles</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Duck_Golf_7_Salt_Spring_Golf_Course_Open_Divisions_and_MA1_2023">Duck Golf #7 - Salt Spring Golf and Country Club - Open Divisions and MA1</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 1 Saturday</td>
+    <td>61</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Mow_Money_Shorter_Grass_2023">Mow Money, Shorter Grass</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 1 Saturday</td>
+    <td>39</td>
+    <td>XC-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/The_Rusty_Scholar_Rusty_Ratings_Cranbrook_2023">The Rusty Scholar | Rusty Ratings Cranbrook</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 1 Saturday</td>
+    <td>45</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Duck_Golf_7_Salt_Spring_Golf_and_Country_Club_Amateur_Divisions_2023">Duck Golf #7 - Salt Spring Golf and Country Club - Amateur Divisions</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 2 Sunday</td>
+    <td>39</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/The_Rusty_TBD_Rusty_Ratings_Three_2023">The Rusty Raven | Rusty Ratings Fairmont</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 8 Saturday</td>
+    <td>31</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/BC_High_School_Disc_Golf_Championship_Series_1_Hart_Memorial_Disc_Golf_Course_2023">BC High School Disc Golf Championship Series #1 - Hart Memorial Disc Golf Course</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 14 Friday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Rocket_Bear_2023">Rocket Bear 2.0 Sponsored by Save On Foods</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 15-16 Sat-Sun</td>
+    <td>72</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Doomsday_Colin_McKinnon_Memorial_2023">Doomsday - Colin McKinnon Memorial</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 16 Sunday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/The_Rusty_Nugget_Rusty_Ratings_Golden_2023">The Rusty Nugget | Rusty Ratings Golden</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 22 Saturday</td>
+    <td>35</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Smith_Lake_Farm_Island_Series_April_29_2022_2023">Smith Lake Farm - Island Series - April 29, 2023</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 29 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/UP_Doubles_Fundraiser_2023">UP Doubles Fundraiser</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 29 Saturday</td>
+    <td>6</td>
+    <td>Doubles</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/The_Rusty_Paddle_Rusty_Ratings_Parsons_2023">The Rusty Paddle | Rusty Ratings Parsons</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 29 Saturday</td>
+    <td>14</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Campbell_River_Island_Series_April_15_2022">Campbell River - Island Series - April 30, 2023</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 30 Sunday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/BC_High_School_Disc_Golf_Championship_Series_2_Smith_Lake_Farm_2023">BC High School Disc Golf Championship Series #2 - Smith Lake Farm</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 1 Monday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_Tournament_Capital_Open_2023">The 2023 Dynamic Discs Tournament Capital Open</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 5-7 Fri-Sun</td>
+    <td>398</td>
+    <td>A-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Doomsday_Disc_Golf_Series_Penticton_2023">Doomsday Disc Golf Series - Penticton</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 13 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Idlewild_Endeavour_2023">Idlewild Endeavour</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 13 Saturday</td>
+    <td>0</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Marys_Farm_Island_Series_May_13_2023">Mary&#39;s Farm - Island Series - May 13, 2023</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 13 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Duck_Golf_8_VCU_Open_Divisions_and_MA1_2023">Duck Golf #8 - VCU - Open Divisions and MA1</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 13 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Duck_Golf_8_VCU_Amateur_Divisions_2023">Duck Golf #8 - VCU - Amateur Divisions</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 14 Sunday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Fernie_Tourney_2023">Fernie Tourney</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 27 Saturday</td>
+    <td>100</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/GIGOGR_at_Stillwood_2023">GIGOGR @ Stillwood</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 27 Saturday</td>
+    <td>0</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Turtle_Crawl_2023">Turtle Crawl</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 28 Sunday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/The_Mulligan_2023">The Mulligan</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 28 Sunday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Sam_Steele_2023">Key City Throwback</a>
+    </td>
+    <td class="row-location"></td>
+    <td>June 17 Saturday</td>
+    <td>0</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Smith_Lake_Farm_Island_Series_June_17_2023">Smith Lake Farm - Island Series - June 17, 2023 - Father’s Day Weekend Tournament</a>
+    </td>
+    <td class="row-location"></td>
+    <td>June 17 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Doomsday_Disc_Golf_Series_Lumby_2023">Doomsday Disc Golf Series - Lumby</a>
+    </td>
+    <td class="row-location"></td>
+    <td>June 18 Sunday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/CWE_at_the_Farm_2023">CWE at the Farm</a>
+    </td>
+    <td class="row-location"></td>
+    <td>June 24 Saturday</td>
+    <td>0</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Okanagan_Disc_Supply_Grand_Prix_Rose_Cup_2023">Okanagan Disc Supply Grand Prix ( Rattlesnake Cup )</a>
+    </td>
+    <td class="row-location"></td>
+    <td>June 25 Sunday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Hub_City_Huck_2023">2023 Hub City Huck Sponsored By Tombstone Discs</a>
+    </td>
+    <td class="row-location"></td>
+    <td>July 8-9 Sat-Sun</td>
+    <td>0</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_Fernie_NADGT_2023">NADGT Canada Exclusive @ Fernie - presented by Grip6</a>
+    </td>
+    <td class="row-location"></td>
+    <td>July 8 Saturday</td>
+    <td>0</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Doomsday_Disc_Golf_Series_Vernon_2023">Doomsday Disc Golf Series - Vernon</a>
+    </td>
+    <td class="row-location"></td>
+    <td>July 16 Sunday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/CDGC_Cultus_Lake_Classic_Singles_2023">CDGC - Cultus Lake Classic - Singles</a>
+    </td>
+    <td class="row-location"></td>
+    <td>July 29 Saturday</td>
+    <td>0</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/CDGC_Cultus_Lake_Classic_Doubles_2023">CDGC - Cultus Lake Classic - Doubles</a>
+    </td>
+    <td class="row-location"></td>
+    <td>July 30 Sunday</td>
+    <td>0</td>
+    <td>Doubles</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/The_Crush_2023">The Crush</a>
+    </td>
+    <td class="row-location"></td>
+    <td>August 12-13 Sat-Sun</td>
+    <td>0</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_BC_Doubles_Championship_2023">2023 BC Doubles Championship</a>
+    </td>
+    <td class="row-location"></td>
+    <td>August 13 Sunday</td>
+    <td>0</td>
+    <td>Doubles</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_Deerborne_Gutshot_2023">2023 Deerborne Gutshot: NADGT Canada Exclusive - Presented by Grip6</a>
+    </td>
+    <td class="row-location"></td>
+    <td>August 19 Saturday</td>
+    <td>40</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Doomsday_Disc_Golf_Series_Logan_Lake_2023">Doomsday Disc Golf Series - Logan Lake</a>
+    </td>
+    <td class="row-location"></td>
+    <td>August 19 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Okanagan_Disc_Supply_Grand_Prix_Copper_Cup_2023">Okanagan Disc Supply Grand Prix (4 Point Cup)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>August 20 Sunday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/The_Fairway_to_Heaven_2023">The Fairway to Heaven</a>
+    </td>
+    <td class="row-location"></td>
+    <td>August 26-27 Sat-Sun</td>
+    <td>0</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Kootenay_Up_and_Down_2023">Kootenay Up &amp; Down</a>
+    </td>
+    <td class="row-location"></td>
+    <td>September 23-24 Sat-Sun</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Annual_Honeycomb_Classic_2023">The Honeycomb Classic</a>
+    </td>
+    <td class="row-location"></td>
+    <td>September 23 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Placeholder_Clearwater_Open_2023">Harvest Huck presented by Best Western Plus &amp; Quality Inn and Suites</a>
+    </td>
+    <td class="row-location"></td>
+    <td>September 29-1 Fri-Sun</td>
+    <td>0</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/The_Rumble_at_The_Ravens_Nest_III_2023">The Rumble at The Raven&#39;s Nest III</a>
+    </td>
+    <td class="row-location"></td>
+    <td>September 30-1 Sat-Sun</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/The_Kootenanny_Huckfest_at_Thin_Air_DGC_Rossland_B_C_2023">The &#39;Kootenanny Huckfest&#39; @ Thin Air DGC , Rossland B.C.</a>
+    </td>
+    <td class="row-location"></td>
+    <td>October 7-8 Sat-Sun</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Okanagan_Disc_Supply_Grand_Prix_Hart_Cup_2023">Okanagan Disc Supply Grand Prix (Crush Cub Cup )</a>
+    </td>
+    <td class="row-location"></td>
+    <td>October 14 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Doomsday_Disc_Golf_Series_Dick_Hart_2023">Doomsday Disc Golf Series - Dick Hart</a>
+    </td>
+    <td class="row-location"></td>
+    <td>October 15 Sunday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Winter_Warm_up_Driven_by_Innova_2023">Winter Warm-up Presented by Innova</a>
+    </td>
+    <td class="row-location"></td>
+    <td>March 18-19 Sat-Sun</td>
+    <td>129</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Christopher_Reeves_Memorial_2023">2nd Annual Christopher Reeves Memorial - Sponsored by Dynamic Discs (Fundraiser for Autism Speaks)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>March 18 Saturday</td>
+    <td>43</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Mandos_Junior_Disc_Golf_Clinic_2023">Mando&#39;s Junior Disc Golf Clinic</a>
+    </td>
+    <td class="row-location"></td>
+    <td>March 18 Saturday</td>
+    <td>5</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Washington_Team_Golf_League_Event_7_Central_Division_2023">Washington Team Golf League - Event 7 - Central Division</a>
+    </td>
+    <td class="row-location"></td>
+    <td>March 19 Sunday</td>
+    <td>0</td>
+    <td>Teams</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Washington_Team_Golf_League_Event_7_South_Division_2023">Washington Team Golf League - Event 7 - South Division</a>
+    </td>
+    <td class="row-location"></td>
+    <td>March 19 Sunday</td>
+    <td>0</td>
+    <td>Teams</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/South_Fork_Tuesdays_Spring_League_Week_1_Sponsored_by_Emerald_City_Discs_2023">South Fork Tuesdays Spring League Week 1 - Sponsored by Emerald City Discs</a>
+    </td>
+    <td class="row-location"></td>
+    <td>March 21 Tuesday</td>
+    <td>6</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Huk_It_2023">Huk It!</a>
+    </td>
+    <td class="row-location"></td>
+    <td>March 25 Saturday</td>
+    <td>13</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/West_Sound_Invitational_2023">West Sound Invitational</a>
+    </td>
+    <td class="row-location"></td>
+    <td>March 25 Saturday</td>
+    <td>107</td>
+    <td>XC-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Sunnyside_Up_part_2_2023">Sunnyside Up 2023 * (ApeX Point Series #3)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>March 25 Saturday</td>
+    <td>100</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_NADGT_Exclusive_at_Twin_Rivers">2023 NADGT Exclusive @ Twin Rivers</a>
+    </td>
+    <td class="row-location"></td>
+    <td>March 25 Saturday</td>
+    <td>73</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Washington_Team_Golf_League_Championship_2023">Washington Team Golf League Championship</a>
+    </td>
+    <td class="row-location"></td>
+    <td>March 26 Sunday</td>
+    <td>0</td>
+    <td>Teams</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Fund_The_Creek_Fundraising_for_Swan_Creek_DGC_2023">Fund The Creek: BYOP Dubs Fundraising for Swan Creek DGC</a>
+    </td>
+    <td class="row-location"></td>
+    <td>March 26 Sunday</td>
+    <td>34</td>
+    <td>Doubles</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2courses4rounds_2023">LAKE &amp; SEA 2023 sponsored by MVP Disc Sports</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 1-2 Sat-Sun</td>
+    <td>160</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Evergreen_Spring_Equinox_2023">Evergreen Spring Equinox</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 1 Saturday</td>
+    <td>72</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Spring_Fling_High_Bridge_2023">Spring Fling . High Bridge * (ApeX Point Series #4)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 1 Saturday</td>
+    <td>66</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Double_Trouble_Dubz_High_Bridge_ADPS_1_2023">Double Trouble Dubz . High Bridge [ADPS #2]</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 1 Saturday</td>
+    <td>12</td>
+    <td>Doubles</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Rippin_in_the_Rhodies_Evergreen_Womens_Series_2023">Rippin in the Rhodies (Evergreen Women&#39;s Series)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 2 Sunday</td>
+    <td>31</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Grit_Discs_presents_Soarin_thru_Skyline_supported_by_Innova_Discs_Day_1_2023">Grit Discs presents &quot;Soarin&#39; thru Skyline&quot; supported by Innova Discs</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 8 Saturday</td>
+    <td>12</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Laura_Palmer_Memorial_presented_by_Twedes_Cafe_2023">Laura Palmer Memorial presented by Twede&#39;s Cafe</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 8 Saturday</td>
+    <td>80</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Shelton_Springs_Open_Mid_range_Clash_fundraiser_2023">Shelton Springs Open Mid-range Challenge Singles fundraiser</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 8 Saturday</td>
+    <td>15</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Shelton_Springs_Open_Mid_range_Clash_Doubles_fundraiser_2023">Shelton Springs Open Mid-range Challenge Doubles fundraiser</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 8 Saturday</td>
+    <td>20</td>
+    <td>Doubles</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_NADGT_Cee_Time_at_North_Bonneville">2023 NADGT: Cee-Time @ North Bonneville with Disc Golf Depot</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 8 Saturday</td>
+    <td>6</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Grit_Discs_presents_Soarin_thru_Skyline_supported_by_Innova_Discs_Day_2_2023">Grit Discs presents &quot;Doublin’ Down at Skyline” supported by Innova Discs</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 9 Sunday</td>
+    <td>4</td>
+    <td>Doubles · XC-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Yin_Yang_Tour_Series_1_2023">Yin Yang Tour Series #1</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 9 Sunday</td>
+    <td>13</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Odus_Memorial_Spring_Open_2023">Odus Memorial Spring Open</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 15-16 Sat-Sun</td>
+    <td>174</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/SeaTac_Takeoff_2023_Am_Only">SeaTac Takeoff 2023 (Am Only)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 22-23 Sat-Sun</td>
+    <td>176</td>
+    <td>A-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Grit_Discs_Destroyer_Tour_at_Evergreen_College_Day_1_2023">Grit Discs presents Schools In Session supported by Innova Discs</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 22 Saturday</td>
+    <td>22</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Windy_River_Open_2023">26th WINDY RIVER OPEN Presented by INNOVA</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 22-23 Sat-Sun</td>
+    <td>100</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Grit_Discs_Destroyer_Tour_at_Evergreen_College_Day_2_2023">Grit Discs present Back 2 School supported by Innova Discs (Doubles)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 23 Sunday</td>
+    <td>28</td>
+    <td>Doubles · XC-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Grit_Discs_Destroyer_Tour_at_Lucky_Mud_Day_1_2023">Grit Discs presents Livin’ It Up @ Lucky Mud supported by Innova Discs</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 29 Saturday</td>
+    <td>36</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Raymond_Seick_Memorial_Driven_by_Innova_2023">Raymond Seick Memorial - Driven by Innova</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 29-30 Sat-Sun</td>
+    <td>75</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/White_River_Open_2023">White River Open Presented By Innova</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 29-30 Sat-Sun</td>
+    <td>112</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Grit_Discs_Destroyer_Tour_at_Lucky_Mud_Day_2_2023">Grit Discs present the Double Dog Dare @ Lucky Mud supported by Innova Discs</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 30 Sunday</td>
+    <td>24</td>
+    <td>Doubles · XC-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Sirens_of_the_Springs_Evergreen_Womens_Series_2023">Sirens of the Springs (Evergreen Women&#39;s Series)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>April 30 Sunday</td>
+    <td>17</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_SPSDGA_Invitational_2023">2023 SPSDGA Invitational</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 6 Saturday</td>
+    <td>64</td>
+    <td>XC-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Twin_Rivers_Open_2023">Twin Rivers Open</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 6-7 Sat-Sun</td>
+    <td>0</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/SPSDGA_Woodland_Creek_BYOP_Dubs_2023_South_Sound_Classic_Fundraiser">SPSDGA Woodland Creek BYOP Dubs 2023 South Sound Classic Fundraiser</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 7 Sunday</td>
+    <td>58</td>
+    <td>Doubles</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Windfall_Masters_Cup_2023">Windfall Masters Cup presented by Innova Champion Discs</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 13-14 Sat-Sun</td>
+    <td>63</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Queen_of_the_Jungle_fundraiser_Alt_doubles_event_2023">Queen of the Jungle Fundraiser - Doubles event</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 13 Saturday</td>
+    <td>0</td>
+    <td>Doubles</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Tournament_Name_TBD_2023">SeaTac Spring Fling</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 20 Saturday</td>
+    <td>38</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_NADGT_Exclusive_at_NSRA">2023 NADGT Exclusive @ NSRA</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 20 Saturday</td>
+    <td>55</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_Shelton_Springs_Open_Presented_by_Dynamic_Discs">2023 Shelton Springs Open Presented by Dynamic Discs</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 20-21 Sat-Sun</td>
+    <td>161</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/RainDoubles_A_Fundraising_Event_2023">RAINDOUBLES 2023</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 20 Saturday</td>
+    <td>6</td>
+    <td>Doubles</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/SeaTac_Putter_Challenge_2023">SeaTac Putter Challenge</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 21 Sunday</td>
+    <td>1</td>
+    <td>XC-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/DGPT_Silver_Cascade_Challenge_2023">DGPT Silver - Cascade Challenge</a>
+    </td>
+    <td class="row-location"></td>
+    <td>May 26-28 Fri-Sun</td>
+    <td>146</td>
+    <td>A-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/SeaTac_Takeoff_2023_Pro_Only">SeaTac Takeoff 2023 (Pro Only)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>June 9-11 Fri-Sun</td>
+    <td>107</td>
+    <td>A-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Evergreen_Summer_Solstice_Equinox_Fundraiser_2023">Evergreen Summer Solstice - Fall Equinox Fundraiser</a>
+    </td>
+    <td class="row-location"></td>
+    <td>June 17 Saturday</td>
+    <td>2</td>
+    <td>Doubles</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Throw_Pink_FUNdraiser_2023">Throw Pink FUNdraiser</a>
+    </td>
+    <td class="row-location"></td>
+    <td>June 17 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_NADGT_Exclusive_at_South_Fork_DGC_MA1_FA1_MA40_FA40_MA50_FA50_MA60">2023 NADGT Exclusive @ South Fork DGC (MA1, FA1, MA40, FA40, MA50, FA50, MA60)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>June 17 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_NADGT_Exclusive_at_South_Fork_MA2_FA2_MA3_FA3_Juniors">2023 NADGT Exclusive @ South Fork (MA2, FA2, MA3, FA3, Juniors)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>June 18 Sunday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Huk_Around_The_Rim_2023">Huk Around The Rim</a>
+    </td>
+    <td class="row-location"></td>
+    <td>June 24 Saturday</td>
+    <td>4</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Farmers_Park_Open_2023">Farmers Park Open 2023</a>
+    </td>
+    <td class="row-location"></td>
+    <td>June 24-25 Sat-Sun</td>
+    <td>0</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Oak_Town_Throwdown_2023">Oak Town Throwdown</a>
+    </td>
+    <td class="row-location"></td>
+    <td>June 24 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Fort_Steilacoom_Open_2023">Fort Steilacoom Open</a>
+    </td>
+    <td class="row-location"></td>
+    <td>June 24-25 Sat-Sun</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Discin_in_the_Sun_2023">Discin&#39; in the Sun (Evergreen Women&#39;s Series)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>June 25 Sunday</td>
+    <td>0</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_NADGT_Zanfel_Premier_Tour_WASHINGTON">2023 NADGT Zanfel Premier Tour: WASHINGTON Presented by Discraft Washington State Amateur Championship</a>
+    </td>
+    <td class="row-location"></td>
+    <td>June 30-2 Fri-Sun</td>
+    <td>0</td>
+    <td>A-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/South_Fork_Open_Presented_by_Lone_Star_Disc_2023">South Fork Open - Presented by Lone Star Disc (MA1, MA3, MA50, Women&#39;s Divisions)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>July 1 Saturday</td>
+    <td>3</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/South_Fork_Open_day2_2023">South Fork Open - Presented by Lone Star Disc (MA2, MA4, MA40, MA60, MP Divisions)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>July 2 Sunday</td>
+    <td>3</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Lone_Star_3_Disc_Challenge_2023">Lone Star 3 Disc Challenge</a>
+    </td>
+    <td class="row-location"></td>
+    <td>July 8 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Ladies_of_the_Lake_2023">Ladies of the Lake 2023</a>
+    </td>
+    <td class="row-location"></td>
+    <td>July 15-16 Sat-Sun</td>
+    <td>2</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Battle_For_The_Bridge_2023">Battle For The Bridge</a>
+    </td>
+    <td class="row-location"></td>
+    <td>July 15-16 Sat-Sun</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/3rd_Annual_Rainshadow_Open_presented_by_Essence_Coffee_Roasters_2023">3rd Annual Rainshadow Open presented by Essence Coffee Roasters</a>
+    </td>
+    <td class="row-location"></td>
+    <td>July 22-23 Sat-Sun</td>
+    <td>0</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_South_Sound_Classic_Presented_by_Dynamic_Discs">2023 South Sound Classic Presented by Dynamic Discs</a>
+    </td>
+    <td class="row-location"></td>
+    <td>July 28-30 Fri-Sun</td>
+    <td>0</td>
+    <td>A-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/GVC_at_Skamania_2023">GVC @ Skamania</a>
+    </td>
+    <td class="row-location"></td>
+    <td>July 29 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Ravens_Run_Sponsored_by_Dynamic_Discs_2023">Raven&#39;s Run Sponsored by Dynamic Discs</a>
+    </td>
+    <td class="row-location"></td>
+    <td>August 5-6 Sat-Sun</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_NADGT_Exclusive_at_Blaine_Disc_Golf_Course">2023 NADGT Exclusive @ Blaine Disc Golf Course</a>
+    </td>
+    <td class="row-location"></td>
+    <td>August 12 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/360_Disc_Golf_Open_2023">360 Disc Golf Open</a>
+    </td>
+    <td class="row-location"></td>
+    <td>August 19-20 Sat-Sun</td>
+    <td>0</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Nuclear_Meltdown_2023">NUCLEAR MELTDOWN Presented by INNOVA</a>
+    </td>
+    <td class="row-location"></td>
+    <td>August 19-20 Sat-Sun</td>
+    <td>0</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_Falling_Barn_Open_AM_day_2023">2023 Falling Barn Open: AM day</a>
+    </td>
+    <td class="row-location"></td>
+    <td>August 19 Saturday</td>
+    <td>0</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/2023_Falling_Barn_Open_PRO_day_2023">2023 Falling Barn Open: PRO day</a>
+    </td>
+    <td class="row-location"></td>
+    <td>August 20 Sunday</td>
+    <td>0</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/SeaTac_Open_Presented_by_Lone_Star_Disc_and_Chuck_Mintz_DG_2023">SeaTac Open</a>
+    </td>
+    <td class="row-location"></td>
+    <td>August 26 Saturday</td>
+    <td>6</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Summertime_Fling_in_the_Evergreens_2023">Summertime Fling in the Evergreens</a>
+    </td>
+    <td class="row-location"></td>
+    <td>August 26 Saturday</td>
+    <td>5</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/South_Puget_Sound_Disc_Golf_Association_Club_Membership_2023">South Puget Sound Disc Golf Association Club Membership 2023</a>
+    </td>
+    <td class="row-location"></td>
+    <td>September 1 Friday</td>
+    <td>101</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Evergreen_Fall_Equinox_2023">Evergreen Fall Equinox</a>
+    </td>
+    <td class="row-location"></td>
+    <td>September 2-3 Sat-Sun</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Wander_The_Woods_MPO_MP40_MP50_FPO_MA1_MA40_MA50_MA60_2023">Wander The Woods (MPO, MP40, MP50, FPO, MA1, MA40, MA50, MA60)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>September 2 Saturday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Wander_The_Woods_MA2_MA3_FA1_FA2_FA3_2023">Wander The Woods (MA2, MA3, FA1, FA2, FA3)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>September 3 Sunday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Craig_Carlson_Memorial_Fundraiser_Presented_by_Frizzbois_Disc_Golf_2023">Craig Carlson Memorial Fundraiser Presented by Frizzbois Disc Golf</a>
+    </td>
+    <td class="row-location"></td>
+    <td>September 3 Sunday</td>
+    <td>0</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/King_of_the_Jungle_2023">King of the Jungle</a>
+    </td>
+    <td class="row-location"></td>
+    <td>September 23-24 Sat-Sun</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Queen_of_the_Jungle_Evergreen_Womans_Series_2023">Queen of the Jungle (Evergreen Woman&#39;s Series)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>October 1 Sunday</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Huk_This_2023">Huk This!</a>
+    </td>
+    <td class="row-location"></td>
+    <td>October 7-8 Sat-Sun</td>
+    <td>0</td>
+    <td>C-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/TerRon_Open_2023">TerRon Open 2023</a>
+    </td>
+    <td class="row-location"></td>
+    <td>October 7-8 Sat-Sun</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/SeaTac_Fall_Classic_2023">SeaTac Fall Classic</a>
+    </td>
+    <td class="row-location"></td>
+    <td>October 14 Saturday</td>
+    <td>2</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Washington_State_Doubles_Championships_2023">2023 Washington State Doubles Championships</a>
+    </td>
+    <td class="row-location"></td>
+    <td>October 15 Sunday</td>
+    <td>0</td>
+    <td>Doubles</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/49th_Annual_Doug_Newland_Memorial_Washington_State_Championships_Pro_Only_2023">49th Annual Doug Newland Memorial - Washington State Championships (Pro Only)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>October 21-22 Sat-Sun</td>
+    <td>0</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/The_Spookane_Open_Presented_by_SDGC_2023">The Spookane Open - Presented by SDGC</a>
+    </td>
+    <td class="row-location"></td>
+    <td>October 28-29 Sat-Sun</td>
+    <td>0</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/BOO_BASH_Halloween_Doubles_Evergreen_Series_Fundraiser_2023">BOO BASH Halloween Doubles (Evergreen Series Fundraiser)</a>
+    </td>
+    <td class="row-location"></td>
+    <td>October 29 Sunday</td>
+    <td>0</td>
+    <td>Doubles</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/West_Sound_Disc_Golf_Association_Membership_2023">West Sound Disc Golf Association Membership 2023</a>
+    </td>
+    <td class="row-location"></td>
+    <td>October 31 Tuesday</td>
+    <td>15</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/SeaTac_Disc_Golf_Association_Club_Membership_2023">SeaTac Disc Golf Association 2023 Club Membership</a>
+    </td>
+    <td class="row-location"></td>
+    <td>November 8 Wednesday</td>
+    <td>37</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/GTO3_2023">GTO3 Presented by INNOVA</a>
+    </td>
+    <td class="row-location"></td>
+    <td>November 25 Saturday</td>
+    <td>0</td>
+    <td>B-tier</td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Mason_County_Disc_Golf_Club_Membership_2023">Mason County Disc Golf Club Membership 2023</a>
+    </td>
+    <td class="row-location"></td>
+    <td>December 31 Sunday</td>
+    <td>20</td>
+    <td></td>
+  </tr>
+  <tr class="tournament-row" data-location="${tournament.location.displayName}">
+    <td>
+      <a href="https://www.discgolfscene.com//tournaments/Fort_Walla_Walla_Disc_Golf_Club_Membership_2023">Fort Walla Walla Disc Golf Club Membership 2023</a>
+    </td>
+    <td class="row-location"></td>
+    <td>December 31 Sunday</td>
+    <td>22</td>
+    <td></td>
+  </tr>
+</table>
+<script>
+  function filterByLocation(location) {
+    const rows = document.querySelectorAll('.tournament-row');
+    rows.forEach(row => {
+      const rowLocation = row.querySelector('.row-location').textContent;
+      if (!location || rowLocation === location) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }
+</script>
+</body>
+</html>
