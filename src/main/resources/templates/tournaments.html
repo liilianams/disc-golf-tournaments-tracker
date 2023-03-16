@@ -18,7 +18,7 @@
     </option>
   </select>
 </div>
-<table>
+<table class="desktop-view">
   <tr>
     <th>Competition</th>
     <th>Location</th>
@@ -34,6 +34,26 @@
     <td th:text="${tournament.dateString}"></td>
     <td th:text="${tournament.registrants}"></td>
     <td th:text="${tournament.tier}"></td>
+  </tr>
+</table>
+<table class="mobile-view">
+  <tr>
+    <th>Competition</th>
+    <th>Location</th>
+    <th>Date</th>
+  </tr>
+  <tr class="tournament-row" th:each="tournament : ${tournaments}">
+    <td>
+      <a th:text="${tournament.name}" th:href="@{${tournament.url}}"></a>
+      <div class="tournament-details">
+        <span>Registrants:</span>
+        <span th:text="${tournament.registrants}"></span>
+        <span th:if="${tournament.tier != ''}">&ensp;|&ensp;Type:</span>
+        <span th:if="${tournament.tier != ''}" th:text="${tournament.tier}"></span>
+      </div>
+    </td>
+    <td class="row-location" th:text="${tournament.location != 'N/A' ? tournament.location : ''}"></td>
+    <td th:text="${tournament.dateString}"></td>
   </tr>
 </table>
 </body>

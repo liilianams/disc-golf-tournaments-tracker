@@ -1,3 +1,7 @@
+.mobile-view {
+  display: none;
+}
+
 table {
   border-collapse: collapse;
   border: none;
@@ -17,7 +21,7 @@ th {
 }
 
 th:first-child {
-  width: 500px;
+  width: 40%;
 }
 
 td {
@@ -42,27 +46,21 @@ a:hover {
   margin: 10px 0;
 }
 
-.filter label {
-  margin-right: 10px;
-  font-size: 14px;
-  font-weight: normal;
-  display: none;
-}
-
 .filter select {
   font-size: 14px;
   font-weight: normal;
   margin-bottom: 5px;
 }
 
-.filter select option {
-  font-size: 14px;
-  font-weight: normal;
-  border-color: #888;
-}
+@media screen and (max-width: 768px) {
+  .desktop-view {
+    display: none;
+  }
 
-/* Media query for screens smaller than 768px */
-@media screen and (max-width: 767px) {
+  .mobile-view {
+    display: table;
+  }
+
   th,
   td {
     font-size: 12px;
@@ -70,7 +68,16 @@ a:hover {
   }
 
   th:first-child {
-    width: 300px;
+    width: 50%;
+  }
+
+  .tournament-details {
+    font-size: 10px;
+    color: #888;
+  }
+
+  .filter select {
+    font-size: 12px;
   }
 
 }
