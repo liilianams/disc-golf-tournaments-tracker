@@ -1,0 +1,76 @@
+table {
+  border-collapse: collapse;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+th {
+  border-bottom: 1px solid #eee;
+  color: #888;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 4px 8px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th:first-child {
+  width: 500px;
+}
+
+td {
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  padding: 4px 8px;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #222;
+  text-decoration: underline;
+}
+
+.filter {
+  font-size: 14px;
+  font-weight: normal;
+  margin: 10px 0;
+}
+
+.filter label {
+  margin-right: 10px;
+  font-size: 14px;
+  font-weight: normal;
+  display: none;
+}
+
+.filter select {
+  font-size: 14px;
+  font-weight: normal;
+  margin-bottom: 5px;
+}
+
+.filter select option {
+  font-size: 14px;
+  font-weight: normal;
+  border-color: #888;
+}
+
+/* Media query for screens smaller than 768px */
+@media screen and (max-width: 767px) {
+  th,
+  td {
+    font-size: 12px;
+    padding: 2px 4px;
+  }
+
+  th:first-child {
+    width: 300px;
+  }
+
+}

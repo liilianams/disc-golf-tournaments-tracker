@@ -1,72 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tournaments</title>
-  <th:import namespace="org.thymeleaf.extras.springsecurity5.util" />
-  <style>
-    table {
-      border-collapse: collapse;
-      border: none;
-      margin: 0;
-      padding: 0;
-      width: 100%;
-    }
-
-    th {
-      border-bottom: 1px solid #eee;
-      color: #888;
-      font-size: 14px;
-      font-weight: normal;
-      padding: 4px 8px;
-      text-align: left;
-      white-space: nowrap;
-    }
-
-    td {
-      border-bottom: 1px solid #eee;
-      font-size: 14px;
-      padding: 4px 8px;
-    }
-
-    a {
-      color: #000;
-      text-decoration: none;
-    }
-
-    a:hover {
-      color: #222;
-      text-decoration: underline;
-    }
-
-    th:first-child {
-      width: 500px;
-    }
-
-    .filter {
-      font-size: 14px;
-      font-weight: normal;
-      margin: 10px 0;
-    }
-
-    .filter label {
-      margin-right: 10px;
-      font-size: 14px;
-      font-weight: normal;
-      display: none;
-    }
-
-    .filter select {
-      font-size: 14px;
-      font-weight: normal;
-      margin-bottom: 5px;
-    }
-
-    .filter select option {
-      font-size: 14px;
-      font-weight: normal;
-      border-color: #888;
-    }
-  </style>
+  <link th:href="@{/css/styles.css}" rel="stylesheet" media="all" />
+  <script th:src="@{/js/scripts.js}"></script>
 </head>
 <body>
 <div class="filter">
@@ -97,18 +36,5 @@
     <td th:text="${tournament.tier}"></td>
   </tr>
 </table>
-<script>
-  function filterByLocation(location) {
-    const rows = document.querySelectorAll('.tournament-row');
-    rows.forEach(row => {
-      const rowLocation = row.querySelector('.row-location').textContent;
-      if (!location || rowLocation === location) {
-        row.style.display = '';
-      } else {
-        row.style.display = 'none';
-      }
-    });
-  }
-</script>
 </body>
 </html>

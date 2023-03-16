@@ -3,12 +3,16 @@ package app.components;
 import app.config.ApplicationProperties;
 import app.model.Tournament;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
+import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import javax.servlet.ServletContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +22,8 @@ import java.util.Map;
 public class HtmlBuilder {
 
   private final ApplicationProperties applicationProperties;
+  @Autowired
+  private final ServletContext servletContext;
 
   String build(Map<String, List<Tournament>> tournaments) {
     // Sort tournaments by location
@@ -27,7 +33,8 @@ public class HtmlBuilder {
     }
 
     // Create Thymeleaf context with tournaments data
-    Context ctx = new Context();
+    ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+    WebContext ctx = new WebContext(attrs.getRequest(), attrs.getResponse(), servletContext, attrs.getRequest().getLocale());
     ctx.setVariable("tournaments", sortedTournaments);
     ctx.setVariable("locations", applicationProperties.getLocations());
 
