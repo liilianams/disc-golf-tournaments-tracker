@@ -1,3 +1,5 @@
+package app.model;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,7 +9,7 @@ import java.util.Comparator;
 
 @Data
 @NoArgsConstructor
-class Tournament {
+public class Tournament {
 
   private String name;
   private LocalDate date;
@@ -15,10 +17,10 @@ class Tournament {
   private Integer registrants;
   private String tier;
   private String description;
-  private Location location;
+  private String location;
   private String url;
 
-  static Comparator<Tournament> dateComparator = Comparator.comparing((Tournament t) -> {
+  public static Comparator<Tournament> dateComparator = Comparator.comparing((Tournament t) -> {
     String[] parts = t.getDateString().split(" ");
     String month = parts[0];
     int monthValue = Month.valueOf(month.toUpperCase()).getValue();

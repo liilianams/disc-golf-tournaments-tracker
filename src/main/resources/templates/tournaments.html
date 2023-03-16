@@ -73,7 +73,9 @@
   <select id="location-filter" onchange="filterByLocation(this.value)">
     <option value="">All Locations</option>
     <option th:each="location : ${locations}"
-            th:value="${location.displayName}" th:text="${location.displayName}">
+            th:if="${location != 'N/A'}"
+            th:value="${location}"
+            th:text="${location}">
     </option>
   </select>
 </div>
@@ -85,11 +87,11 @@
     <th>Registrants</th>
     <th>Type</th>
   </tr>
-  <tr th:each="tournament : ${tournaments}" class="tournament-row" data-location="${tournament.location.displayName}">
+  <tr class="tournament-row" th:each="tournament : ${tournaments}">
     <td>
       <a th:text="${tournament.name}" th:href="@{${tournament.url}}"></a>
     </td>
-    <td class="row-location" th:text="${tournament.location.displayName}"></td>
+    <td class="row-location" th:text="${tournament.location != 'N/A' ? tournament.location : ''}"></td>
     <td th:text="${tournament.dateString}"></td>
     <td th:text="${tournament.registrants}"></td>
     <td th:text="${tournament.tier}"></td>

@@ -1,3 +1,5 @@
+package app.components;
+
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;

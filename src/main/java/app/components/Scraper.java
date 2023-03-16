@@ -1,8 +1,14 @@
+package app.components;
+
+import app.config.ApplicationProperties;
+import app.model.Tournament;
+import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,14 +16,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Component
+@RequiredArgsConstructor
 public class Scraper {
 
-  private static final String BASE_URL = "https://www.discgolfscene.com/";
+  private static final String BASE_URL = "https://www.discgolfscene.com";
 
-  Map<Location, List<Tournament>> scrape(List<String> statesProperties) {
-    Map<Location, List<Tournament>> result = new HashMap<>();
-    statesProperties.forEach(p -> {
-      Map<Location, List<Tournament>> tournaments = getTournaments(p);
+  private final ApplicationProperties applicationProperties;
+  private final HtmlBuilder htmlBuilder;
+
+  public String scrape() {
+    Map<String, List<Tournament>> tournaments = scrapeTournaments();
+
+    return htmlBuilder.build(tournaments);
+  }
+
+  private Map<String, List<Tournament>> scrapeTournaments() {
+    Map<String, List<Tournament>> result = new HashMap<>();
+    applicationProperties.getStates().forEach(state -> {
+      Map<String, List<Tournament>> tournaments = getTournaments(state);
       tournaments.forEach((location, list) -> {
         result.merge(location, list, (list1, list2) -> {
           list1.addAll(list2);
@@ -28,8 +45,8 @@ public class Scraper {
     return result;
   }
 
-  private Map<Location, List<Tournament>> getTournaments(String state) {
-    String url = BASE_URL + "tournaments/" + state;
+  private Map<String, List<Tournament>> getTournaments(String state) {
+    String url = BASE_URL + "/tournaments/" + state;
     try {
       Document page = Jsoup.connect(url).get();
       Elements tournamentsElements = page.select("div.tournaments-listing-all div.tl");
@@ -51,7 +68,7 @@ public class Scraper {
       String competition = getCompetition(element);
       String registrants = element.select("span.info:contains(Registrants)").text().replace("Registrants: ", "");
       String tier = element.select("span.info.ts").text();
-      String location = Utils.capitalize(getLocation(element).toLowerCase());
+      String location = getLocation(element);
       String url = getUrl(element);
 
       Tournament tournament = new Tournament();
@@ -60,7 +77,7 @@ public class Scraper {
       tournament.setDateString(date);
       tournament.setRegistrants(registrants.isBlank() ? 0 : Integer.parseInt(registrants));
       tournament.setTier(tier);
-      tournament.setLocation(Location.fromString(location));
+      tournament.setLocation(location);
       tournament.setUrl(url);
       result.add(tournament);
     }
@@ -74,17 +91,12 @@ public class Scraper {
 
   private String getLocation(Element element) {
     String competition = element.text().toLowerCase();
-    if (competition.contains("raptors knoll")) {
-      return "Raptors Knoll";
-    } else if (competition.contains("burnaby")) {
-      return "Burnaby";
-    } else if (competition.contains("squamish")) {
-      return "Squamish";
-    } else if (competition.contains("kayak point")) {
-      return "Kayak Point";
-    } else {
-      return "";
+    for (String searchString : applicationProperties.getLocations()) {
+      if (competition.contains(searchString.toLowerCase())) {
+        return Utils.capitalize(searchString);
+      }
     }
+    return "N/A";
   }
 
   private String getCompetition(Element tournament) {
@@ -105,6 +117,5 @@ public class Scraper {
     });
     return result.toString().trim();
   }
-
 
 }
