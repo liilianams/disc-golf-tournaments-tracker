@@ -20,3 +20,10 @@ favorite locations and courses.
 docker build -t my-app .
 docker run -p 8080:8080 my-app
 ``` 
+### Deploy to fly.io
+The app is deployed to fly.io.
+```
+flyctl auth login
+flyctl auth docker
+flyctl deploy
+``` 
