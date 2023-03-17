@@ -10,8 +10,8 @@
   <link rel="shortcut icon" type="image/png" th:href="@{/img/basket.png}"/>
 </head>
 <body>
-<div class="filter">
-  <select id="location-filter" onchange="filterByLocation(this.value)">
+<div class="filters">
+  <select class="filter" id="location-filter" onchange="filterTournaments()">
     <option value="">All Locations</option>
     <option th:each="location : ${locations}"
             th:if="${location != 'N/A'}"
@@ -19,6 +19,30 @@
             th:text="${location}">
     </option>
   </select>
+  <select class="filter" id="month-filter" onchange="filterTournaments()">
+    <option value="">All Months</option>
+    <option value="January">January</option>
+    <option value="February">February</option>
+    <option value="March">March</option>
+    <option value="April">April</option>
+    <option value="May">May</option>
+    <option value="June">June</option>
+    <option value="July">July</option>
+    <option value="August">August</option>
+    <option value="September">September</option>
+    <option value="October">October</option>
+    <option value="November">November</option>
+    <option value="December">December</option>
+  </select>
+  <select class="filter" id="tier-filter" onchange="filterTournaments()">
+    <option value="">All Tiers</option>
+    <option value="A">A</option>
+    <option value="B">B</option>
+    <option value="C">C</option>
+    <option value="Doubles">Doubles</option>
+    <option value="XC">XC</option>
+  </select>
+  <button class="reset-button" onclick="resetFilters()">Reset</button>
 </div>
 <table class="desktop-view">
   <tr>
@@ -26,16 +50,16 @@
     <th>Location</th>
     <th>Date</th>
     <th>Registrants</th>
-    <th>Type</th>
+    <th>Tier</th>
   </tr>
   <tr class="tournament-row" th:each="tournament : ${tournaments}">
     <td>
       <a th:text="${tournament.name}" th:href="@{${tournament.url}}"></a>
     </td>
     <td class="row-location" th:text="${tournament.location != 'N/A' ? tournament.location : ''}"></td>
-    <td th:text="${tournament.dateString}"></td>
+    <td class="row-date" th:text="${tournament.dateString}"></td>
     <td th:text="${tournament.registrants}"></td>
-    <td th:text="${tournament.tier}"></td>
+    <td class="row-tier" th:text="${tournament.tier}"></td>
   </tr>
 </table>
 <table class="mobile-view">
@@ -50,12 +74,12 @@
       <div class="tournament-details">
         <span>Registrants:</span>
         <span th:text="${tournament.registrants}"></span>
-        <span th:if="${tournament.tier != ''}">&ensp;|&ensp;Type:</span>
-        <span th:if="${tournament.tier != ''}" th:text="${tournament.tier}"></span>
+        <span th:if="${tournament.tier != ''}">&ensp;|&ensp;Tier:</span>
+        <span class="row-tier" th:if="${tournament.tier != ''}" th:text="${tournament.tier}"></span>
       </div>
     </td>
     <td class="row-location" th:text="${tournament.location != 'N/A' ? tournament.location : ''}"></td>
-    <td th:text="${tournament.dateString}"></td>
+    <td class="row-date" th:text="${tournament.dateString}"></td>
   </tr>
 </table>
 </body>
