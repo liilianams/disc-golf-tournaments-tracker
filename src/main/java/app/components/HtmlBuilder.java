@@ -16,6 +16,7 @@ import javax.servlet.ServletContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class HtmlBuilder {
     // Sort tournaments by location
     List<Tournament> sortedTournaments = new ArrayList<>();
     for (String location : applicationProperties.getLocations()) {
-      sortedTournaments.addAll(tournaments.get(location));
+      Optional.ofNullable(tournaments.get(location)).ifPresent(sortedTournaments::addAll);
     }
 
     // Create Thymeleaf context with tournaments data
