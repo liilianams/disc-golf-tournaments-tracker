@@ -1,24 +1,24 @@
-## Disc Golf Scene Scraper
+## Disc Golf Tournaments Tracker
 
-A web scraper that pulls information about upcoming disc golf tournaments from
-[Disc Golf Scene](https://www.discgolfscene.com/tournaments). The app provides a 
-simple table to track the tournaments at [configured](src/main/resources/application.properties) 
-favorite locations and courses.
-
-### Prerequisites
-
-- Java 17
-- Gradle 7.3
+An app that pulls information about upcoming disc golf tournaments from
+[Disc Golf Scene](https://www.discgolfscene.com/tournaments), and then displays the tournaments
+that take place in [configured](src/main/resources/application.properties) favorite states and courses 
+in a simple table format.
 
 ### Run locally
+Prerequisites:
+- Java 17
+- Gradle 7.3
 ```
 ./gradlew build
 ./gradlew bootRun
 ``` 
 ### Run in Docker
+Prerequisites:
+- Docker
 ```
-docker build -t my-app .
-docker run -p 8080:8080 my-app
+docker build -t tournaments-tracker .
+docker run -p 8080:8080 tournaments-tracker
 ``` 
 ### Deploy to fly.io
 The app is deployed to fly.io.
