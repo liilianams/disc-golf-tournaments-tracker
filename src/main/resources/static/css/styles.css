@@ -20,7 +20,7 @@ th {
   white-space: nowrap;
 }
 
-th:first-child {
+.row-tournament-name {
   width: 40%;
 }
 
@@ -70,18 +70,27 @@ a:hover {
     padding: 2px 4px;
   }
 
-  th:first-child {
+  .row-tournament-name {
     width: 50%;
   }
 
+  .date-details,
+  .location-details,
   .tournament-details {
     font-size: 10px;
     color: #888;
   }
 
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   .reset-button,
   .filter {
     font-size: 12px;
+    flex: 1 1 100%;
+    margin-bottom: 3px;
   }
 
 }

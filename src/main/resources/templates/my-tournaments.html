@@ -5,29 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tournaments</title>
   <link th:href="@{/css/styles.css}" rel="stylesheet" media="all" />
-  <script th:src="@{/js/tournaments.js}"></script>
+  <script th:src="@{/js/myTournaments.js}"></script>
   <!-- Favicon attribution: Disc Golf Basket by Kevin from Noun Project: https://thenounproject.com/browse/icons/term/disc-golf-basket/ -->
   <link rel="shortcut icon" type="image/png" th:href="@{/img/basket.png}"/>
 </head>
 <body>
 <div class="filters">
-  <select class="filter" id="course-filter" onchange="filterTournaments()">
-    <option value="">All Courses</option>
-    <th:block th:each="course : ${courses}">
-      <option th:value="${course}" th:text="${course}"></option>
-    </th:block>
-  </select>
-  <select class="filter" id="city-filter" onchange="filterTournaments()">
-    <option value="">All Cities</option>
-    <th:block th:each="city : ${cities}">
-      <option th:value="${city}" th:text="${city}"></option>
-    </th:block>
-  </select>
-  <select class="filter" id="state-filter" onchange="filterTournaments()">
-    <option value="">All States</option>
-    <th:block th:each="state : ${states}">
-      <option th:value="${state}" th:text="${state}"></option>
-    </th:block>
+  <select class="filter" id="location-filter" onchange="filterTournaments()">
+    <option value="">All Locations</option>
+    <option th:each="location : ${locations}"
+            th:if="${location != 'N/A'}"
+            th:value="${location}"
+            th:text="${location}">
+    </option>
   </select>
   <select class="filter" id="month-filter" onchange="filterTournaments()">
     <option value="">All Months</option>
@@ -56,38 +46,29 @@
 </div>
 <table class="desktop-view">
   <tr>
-    <th>Date</th>
     <th>Competition</th>
-    <th>Course</th>
     <th>Location</th>
+    <th>Date</th>
     <th>Registrants</th>
     <th>Tier</th>
   </tr>
   <tr class="tournament-row" th:each="tournament : ${tournaments}">
-    <td class="row-date" th:text="${tournament.dateString}"></td>
-    <td class="row-tournament-name">
+    <td>
       <a th:text="${tournament.name}" th:href="@{${tournament.url}}"></a>
     </td>
-    <td class="row-course" th:text="${tournament.course}"></td>
-    <td>
-      <span class="row-city" th:text="${tournament.city} + ',&nbsp;'"></span>
-      <span class="row-state" th:text="${tournament.state}"></span>
-    </td>
+    <td class="row-location" th:text="${tournament.customLocation}"></td>
+    <td class="row-date" th:text="${tournament.dateString}"></td>
     <td th:text="${tournament.registrants}"></td>
     <td class="row-tier" th:text="${tournament.tier}"></td>
   </tr>
 </table>
 <table class="mobile-view">
   <tr>
-    <th>Date</th>
     <th>Competition</th>
-    <th>Course</th>
+    <th>Location</th>
+    <th>Date</th>
   </tr>
   <tr class="tournament-row" th:each="tournament : ${tournaments}">
-    <td>
-      <div class="row-date" th:text="${tournament.dayAndMonth}"></div>
-      <div class="date-details" th:text="${tournament.dayOfWeek}"></div>
-    </td>
     <td>
       <a th:text="${tournament.name}" th:href="@{${tournament.url}}"></a>
       <div class="tournament-details">
@@ -97,13 +78,8 @@
         <span class="row-tier" th:if="${tournament.tier != ''}" th:text="${tournament.tier}"></span>
       </div>
     </td>
-    <td>
-      <div class="row-course" th:text="${tournament.course}"></div>
-      <div class="location-details">
-        <span class="row-city" th:text="${tournament.city} + ',&nbsp;'"></span>
-        <span class="row-state" th:text="${tournament.state}"></span>
-      </div>
-    </td>
+    <td class="row-location" th:text="${tournament.customLocation}"></td>
+    <td class="row-date" th:text="${tournament.dateString}"></td>
   </tr>
 </table>
 </body>

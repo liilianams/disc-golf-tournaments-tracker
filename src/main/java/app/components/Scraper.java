@@ -11,10 +11,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -25,39 +22,27 @@ public class Scraper {
   private final ApplicationProperties applicationProperties;
   private final HtmlBuilder htmlBuilder;
 
-  public String scrape() {
-    Map<String, List<Tournament>> tournaments = scrapeTournaments();
-
-    return htmlBuilder.build(tournaments);
+  public String getAllTournaments() {
+    return htmlBuilder.buildAllTournaments(getTournaments());
   }
 
-  private Map<String, List<Tournament>> scrapeTournaments() {
-    Map<String, List<Tournament>> result = new HashMap<>();
-    applicationProperties.getStates().forEach(state -> {
-      Map<String, List<Tournament>> tournaments = getTournaments(state);
-      tournaments.forEach((location, list) -> {
-        result.merge(location, list, (list1, list2) -> {
-          list1.addAll(list2);
-          return list1;
-        });
-      });
-    });
-    return result;
+  public String getMyTournaments() {
+    return htmlBuilder.buildMyTournaments(getTournaments());
   }
 
-  private Map<String, List<Tournament>> getTournaments(String state) {
+  private List<Tournament> getTournaments() {
+    return applicationProperties.getStates().stream().flatMap(state -> getTournaments(state).stream()).toList();
+  }
+
+  private List<Tournament> getTournaments(String state) {
     String url = BASE_URL + "/tournaments/" + state;
     try {
       Document page = Jsoup.connect(url).get();
       Elements tournamentsElements = page.select("div.tournaments-listing-all div.tl");
-      List<Tournament> tournaments = mapToTournaments(tournamentsElements);
-
-      return tournaments.stream()
-          .sorted(Tournament.dateComparator)
-          .collect(Collectors.groupingBy(Tournament::getCustomLocation));
+      return mapToTournaments(tournamentsElements);
     } catch (Exception e) {
       e.printStackTrace();
-      return Map.of();
+      return List.of();
     }
   }
 
@@ -65,6 +50,8 @@ public class Scraper {
     List<Tournament> result = new ArrayList<>();
     for (Element element : tournamentsElements) {
       String date = getDate(element);
+      String dayOfWeek = getDayOfWeek(date);
+      String dayAndMonth = getDayAndMonth(date);
       String competition = getCompetition(element);
       String registrants = element.select("span.info:contains(Registrants)").text().replace("Registrants: ", "");
       String tier = element.select("span.info.ts").text();
@@ -81,6 +68,8 @@ public class Scraper {
       Tournament tournament = new Tournament();
       tournament.setName(competition);
       tournament.setDate(date.contains("-") ? null : Utils.convertToLocalDate(date));
+      tournament.setDayOfWeek(dayOfWeek);
+      tournament.setDayAndMonth(dayAndMonth);
       tournament.setDateString(date);
       tournament.setRegistrants(registrants.isBlank() ? 0 : Integer.parseInt(registrants));
       tournament.setTier(tier);
@@ -93,6 +82,15 @@ public class Scraper {
       result.add(tournament);
     }
     return result;
+  }
+
+  private String getDayAndMonth(String date) {
+    String[] dateParts = date.split(" ");
+    return dateParts[0] + " " + dateParts[1];
+  }
+
+  private String getDayOfWeek(String date) {
+    return date.split(" ")[2];
   }
 
   private String getUrl(Element element) {
@@ -135,7 +133,7 @@ public class Scraper {
   }
 
   private String[] getLocationParts(Element element) {
-    String locationString = element.select("span:contains(at )").text();
+    String locationString = element.select("span:not(:containsOwn(Sat)):not(:containsOwn(sat)):containsOwn(at )").text();
     return locationString.replace("at ", "").split(" · ");
   }
 

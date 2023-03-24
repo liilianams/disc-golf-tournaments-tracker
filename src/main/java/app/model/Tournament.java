@@ -14,6 +14,8 @@ public class Tournament {
   private String name;
   private LocalDate date;
   private String dateString;
+  private String dayAndMonth;
+  private String dayOfWeek;
   private Integer registrants;
   private String tier;
   private String course;
