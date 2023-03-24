@@ -16,8 +16,11 @@ public class Tournament {
   private String dateString;
   private Integer registrants;
   private String tier;
-  private String description;
-  private String location;
+  private String course;
+  private String city;
+  private String state;
+  private String customLocation;
+  private String hostedBy;
   private String url;
 
   public static Comparator<Tournament> dateComparator = Comparator.comparing((Tournament t) -> {

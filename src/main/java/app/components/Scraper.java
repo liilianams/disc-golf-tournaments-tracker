@@ -54,7 +54,7 @@ public class Scraper {
 
       return tournaments.stream()
           .sorted(Tournament.dateComparator)
-          .collect(Collectors.groupingBy(Tournament::getLocation));
+          .collect(Collectors.groupingBy(Tournament::getCustomLocation));
     } catch (Exception e) {
       e.printStackTrace();
       return Map.of();
@@ -68,8 +68,15 @@ public class Scraper {
       String competition = getCompetition(element);
       String registrants = element.select("span.info:contains(Registrants)").text().replace("Registrants: ", "");
       String tier = element.select("span.info.ts").text();
-      String location = getLocation(element);
+      String customLocation = getCustomLocation(element);
       String url = getUrl(element);
+      String hostedBy = getHostedBy(element);
+
+      String[] locationParts = getLocationParts(element);
+      String course = locationParts[0];
+      String[] cityAndState = locationParts[1].split(", ");
+      String city = cityAndState[0];
+      String state = cityAndState[1];
 
       Tournament tournament = new Tournament();
       tournament.setName(competition);
@@ -77,7 +84,11 @@ public class Scraper {
       tournament.setDateString(date);
       tournament.setRegistrants(registrants.isBlank() ? 0 : Integer.parseInt(registrants));
       tournament.setTier(tier);
-      tournament.setLocation(location);
+      tournament.setCourse(course);
+      tournament.setCity(city);
+      tournament.setState(state);
+      tournament.setHostedBy(hostedBy);
+      tournament.setCustomLocation(customLocation);
       tournament.setUrl(url);
       result.add(tournament);
     }
@@ -89,7 +100,7 @@ public class Scraper {
     return BASE_URL + link.attr("href");
   }
 
-  private String getLocation(Element element) {
+  private String getCustomLocation(Element element) {
     String competition = element.text().toLowerCase();
     for (String searchString : applicationProperties.getLocations()) {
       if (competition.contains(searchString.toLowerCase())) {
@@ -116,6 +127,16 @@ public class Scraper {
       }
     });
     return result.toString().trim();
+  }
+
+  private String getHostedBy(Element element) {
+    String hostedByString = element.select("span:contains(hosted by)").text();
+    return hostedByString.replace("hosted by ", "").trim();
+  }
+
+  private String[] getLocationParts(Element element) {
+    String locationString = element.select("span:contains(at )").text();
+    return locationString.replace("at ", "").split(" · ");
   }
 
 }

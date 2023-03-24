@@ -56,7 +56,7 @@
     <td>
       <a th:text="${tournament.name}" th:href="@{${tournament.url}}"></a>
     </td>
-    <td class="row-location" th:text="${tournament.location != 'N/A' ? tournament.location : ''}"></td>
+    <td class="row-location" th:text="${tournament.customLocation != 'N/A' ? tournament.customLocation : ''}"></td>
     <td class="row-date" th:text="${tournament.dateString}"></td>
     <td th:text="${tournament.registrants}"></td>
     <td class="row-tier" th:text="${tournament.tier}"></td>
@@ -78,7 +78,7 @@
         <span class="row-tier" th:if="${tournament.tier != ''}" th:text="${tournament.tier}"></span>
       </div>
     </td>
-    <td class="row-location" th:text="${tournament.location != 'N/A' ? tournament.location : ''}"></td>
+    <td class="row-location" th:text="${tournament.customLocation != 'N/A' ? tournament.customLocation : ''}"></td>
     <td class="row-date" th:text="${tournament.dateString}"></td>
   </tr>
 </table>
