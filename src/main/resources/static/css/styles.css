@@ -55,6 +55,14 @@ a:hover {
   margin-right: 2px;
 }
 
+.footer {
+  margin: 7px 0 10px;
+  color: #888;
+  font-size: 14px;
+  padding: 4px 8px;
+  text-align: left;
+}
+
 @media screen and (max-width: 768px) {
   .desktop-view {
     display: none;
@@ -91,6 +99,10 @@ a:hover {
     font-size: 12px;
     flex: 1 1 100%;
     margin-bottom: 3px;
+  }
+
+  .footer {
+    font-size: 12px;
   }
 
 }
