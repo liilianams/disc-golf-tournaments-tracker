@@ -45,19 +45,29 @@ public class HtmlBuilder {
     return buildHtml("my-tournaments", result);
   }
 
+  public String buildLogin() {
+    return buildHtml("login", Map.of());
+  }
+
   private String buildHtml(String templateName, List<Tournament> sortedTournaments) {
     List<String> courses = sortedTournaments.stream().map(Tournament::getCourse).distinct().sorted().toList();
     List<String> cities = sortedTournaments.stream().map(Tournament::getCity).distinct().sorted().toList();
     List<String> states = sortedTournaments.stream().map(Tournament::getState).distinct().sorted().toList();
+    Map<String, Object> contextParams = Map.of(
+        "tournaments", sortedTournaments,
+        "locations", applicationProperties.getLocations(),
+        "courses", courses,
+        "cities", cities,
+        "states", states
+    );
+    return buildHtml(templateName, contextParams);
+  }
 
+  private String buildHtml(String templateName, Map<String, Object> contextParams) {
     // Create Thymeleaf context
     ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
     WebContext ctx = new WebContext(attrs.getRequest(), attrs.getResponse(), servletContext, attrs.getRequest().getLocale());
-    ctx.setVariable("tournaments", sortedTournaments);
-    ctx.setVariable("locations", applicationProperties.getLocations());
-    ctx.setVariable("courses", courses);
-    ctx.setVariable("cities", cities);
-    ctx.setVariable("states", states);
+    ctx.setVariables(contextParams);
 
     // Get the template
     ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();

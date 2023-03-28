@@ -15,5 +15,14 @@ public class ApplicationProperties {
 
   private List<String> states;
   private List<String> locations;
+  private Login login;
+
+  @Getter
+  @Setter
+  public static class Login {
+
+    private String password;
+
+  }
 
 }
