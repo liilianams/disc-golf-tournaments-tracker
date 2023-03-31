@@ -2,6 +2,11 @@
   display: none;
 }
 
+div {
+  margin: 0;
+  border: 0;
+}
+
 table {
   border-collapse: collapse;
   border: none;
@@ -41,18 +46,24 @@ a:hover {
 }
 
 .filters {
+  display: inline-flex;
   margin: 10px 0;
+  font-size: 14px;
 }
 
-.reset-button {
-  font-size: 14px;
-  padding: 0.2px 4px 0px 4px;
+.filter-row-1,
+.filter-row-2,
+.filter-row-3 {
+  display: flex;
 }
 
 .filter {
-  font-size: 14px;
-  padding: 0.25px 0px 0.25px 0px;
-  margin-right: 2px;
+  padding: 1px;
+  margin: 0px 4px;
+}
+
+.reset-button {
+  padding: 1px 5px 1px 5px;
 }
 
 .footer {
@@ -94,11 +105,39 @@ a:hover {
     flex-wrap: wrap;
   }
 
-  .reset-button,
+  .filter-row-1 {
+    display: flex;
+    flex: 2;
+    flex-direction: row;
+    flex-basis: 100%;
+  }
+
+  .filter-row-2 {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    flex-basis: 100%;
+  }
+
+  .filter-row-3 {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    flex-basis: 100%;
+  }
+
+  .filter-row-4 {
+    display: flex;
+    flex: 2;
+    flex-direction: row;
+    flex-basis: 100%;
+  }
+
   .filter {
     font-size: 12px;
     flex: 1 1 100%;
-    margin-bottom: 3px;
+    margin: 0px 2px 3px 0px;
+    width: 100%;
   }
 
   .footer {
