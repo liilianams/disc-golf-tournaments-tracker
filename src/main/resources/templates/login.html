@@ -13,6 +13,7 @@
     <form method="post" th:action="@{/login}">
       <label for="password">Enter password</label>
       <input class="password-input" type="password" id="password" name="password" />
+      <input type="hidden" name="redirect" th:value="${param.redirect}" />
       <button type="submit">Submit</button>
       <span class="login-error" th:if="${error}" style="color: red;">Invalid password</span>
     </form>

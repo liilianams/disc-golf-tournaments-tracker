@@ -46,29 +46,33 @@
 </div>
 <table class="desktop-view">
   <tr>
+    <th>Date</th>
     <th>Competition</th>
     <th>Location</th>
-    <th>Date</th>
     <th>Registrants</th>
     <th>Tier</th>
   </tr>
   <tr class="tournament-row" th:each="tournament : ${tournaments}">
+    <td class="row-date" th:text="${tournament.dateString}"></td>
     <td>
       <a th:text="${tournament.name}" th:href="@{${tournament.url}}"></a>
     </td>
     <td class="row-location" th:text="${tournament.customLocation}"></td>
-    <td class="row-date" th:text="${tournament.dateString}"></td>
     <td th:text="${tournament.registrants}"></td>
     <td class="row-tier" th:text="${tournament.tier}"></td>
   </tr>
 </table>
 <table class="mobile-view">
   <tr>
+    <th>Date</th>
     <th>Competition</th>
     <th>Location</th>
-    <th>Date</th>
   </tr>
   <tr class="tournament-row" th:each="tournament : ${tournaments}">
+    <td>
+      <div class="row-date" th:text="${tournament.dayAndMonth}"></div>
+      <div class="date-details" th:text="${tournament.dayOfWeek}"></div>
+    </td>
     <td>
       <a th:text="${tournament.name}" th:href="@{${tournament.url}}"></a>
       <div class="tournament-details">
@@ -79,7 +83,6 @@
       </div>
     </td>
     <td class="row-location" th:text="${tournament.customLocation}"></td>
-    <td class="row-date" th:text="${tournament.dateString}"></td>
   </tr>
 </table>
 </body>

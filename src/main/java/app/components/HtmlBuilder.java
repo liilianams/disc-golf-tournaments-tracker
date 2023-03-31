@@ -13,11 +13,8 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import javax.servlet.ServletContext;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -29,27 +26,23 @@ public class HtmlBuilder {
 
   String buildAllTournaments(List<Tournament> tournaments) {
     List<Tournament> sortedTournaments = tournaments.stream().sorted(Tournament.dateComparator).toList();
-    return buildHtml("tournaments", sortedTournaments);
+    return buildTournamentsHtml("tournaments", sortedTournaments);
   }
 
   String buildMyTournaments(List<Tournament> tournaments) {
-    List<Tournament> result = new ArrayList<>();
-    Map<String, List<Tournament>> groupedTournaments = tournaments.stream()
+    List<String> myLocations = applicationProperties.getLocations();
+    List<Tournament> myTournaments = tournaments.stream()
         .sorted(Tournament.dateComparator)
-        .collect(Collectors.groupingBy(Tournament::getCustomLocation));
-
-    for (String location : applicationProperties.getLocations()) {
-      Optional.ofNullable(groupedTournaments.get(location)).ifPresent(result::addAll);
-    }
-
-    return buildHtml("my-tournaments", result);
+        .filter(a -> myLocations.contains(a.getCustomLocation()))
+        .toList();
+    return buildTournamentsHtml("my-tournaments", myTournaments);
   }
 
   public String buildLogin() {
     return buildHtml("login", Map.of());
   }
 
-  private String buildHtml(String templateName, List<Tournament> sortedTournaments) {
+  private String buildTournamentsHtml(String templateName, List<Tournament> sortedTournaments) {
     List<String> courses = sortedTournaments.stream().map(Tournament::getCourse).distinct().sorted().toList();
     List<String> cities = sortedTournaments.stream().map(Tournament::getCity).distinct().sorted().toList();
     List<String> states = sortedTournaments.stream().map(Tournament::getState).distinct().sorted().toList();

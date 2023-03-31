@@ -22,14 +22,8 @@ public class LoginApi {
   private final ApplicationProperties applicationProperties;
 
   @GetMapping("/login")
-  public String showLogin(
-      @RequestParam(value = "redirect", required = false) String redirect,
-      HttpSession session,
-      HttpServletResponse response,
-      HttpServletRequest request
-  ) throws IOException {
+  public String showLogin(HttpSession session, HttpServletRequest request) {
     if (session.getAttribute("passwordChecked") != null) {
-      response.sendRedirect(Objects.requireNonNullElse(redirect, "/"));
       return "";
     }
     request.removeAttribute("error");
@@ -48,9 +42,8 @@ public class LoginApi {
       session.setAttribute("passwordChecked", true);
       response.sendRedirect(Objects.requireNonNullElse(redirect, "/"));
       return "";
-    } else {
-      request.setAttribute("error", "Invalid password");
-      return htmlBuilder.buildLogin();
     }
+    request.setAttribute("error", "Invalid password");
+    return htmlBuilder.buildLogin();
   }
 }
