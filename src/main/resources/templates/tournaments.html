@@ -76,7 +76,7 @@
     <td class="row-tournament-name">
       <a th:text="${tournament.name}" th:href="@{${tournament.url}}"></a>
     </td>
-    <td class="row-course" th:text="${tournament.course}"></td>
+    <td class="row-course" th:text="${tournament.course}" onclick="openGoogleMaps(this)"></td>
     <td>
       <span class="row-city" th:text="${tournament.city} + ',&nbsp;'"></span>
       <span class="row-state" th:text="${tournament.state}"></span>
@@ -101,12 +101,12 @@
       <div class="tournament-details">
         <span>Registrants:</span>
         <span th:text="${tournament.registrants}"></span>
-        <span th:if="${tournament.tier != ''}">&ensp;|&ensp;Tier:</span>
+        <span th:if="${tournament.tier != ''}">&nbsp;|&nbsp;Tier:</span>
         <span class="row-tier" th:if="${tournament.tier != ''}" th:text="${tournament.tier}"></span>
       </div>
     </td>
     <td>
-      <div class="row-course" th:text="${tournament.course}"></div>
+      <div class="row-course" th:text="${tournament.course}" onclick="openGoogleMaps(this)"></div>
       <div class="location-details">
         <span class="row-city" th:text="${tournament.city} + ',&nbsp;'"></span>
         <span class="row-state" th:text="${tournament.state}"></span>

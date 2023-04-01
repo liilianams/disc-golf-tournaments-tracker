@@ -43,3 +43,22 @@ function filterTournaments() {
     }
   });
 }
+
+function openGoogleMaps(event) {
+  const courseName = encodeURIComponent(addDiscGolfCourse(event.textContent));
+  const city = encodeURIComponent(event.parentNode.querySelector('.row-city').textContent);
+  const state = encodeURIComponent(event.parentNode.querySelector('.row-state').textContent);
+  const location = `${courseName}, ${city}${state}`;
+  const url = `https://www.google.com/maps/search/?api=1&query=${location}`;
+  window.open(url);
+}
+
+function addDiscGolfCourse(courseName) {
+  const hasDiscGolfCourse = courseName.toLowerCase().includes('golf') ||
+    courseName.toLowerCase().includes('course') ||
+    courseName.toLowerCase().includes('park');
+  if (!hasDiscGolfCourse) {
+    courseName += ' Disc Golf Course';
+  }
+  return courseName;
+}

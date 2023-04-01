@@ -57,7 +57,11 @@
     <td>
       <a th:text="${tournament.name}" th:href="@{${tournament.url}}"></a>
     </td>
-    <td class="row-location" th:text="${tournament.customLocation}"></td>
+    <td class="row-location" th:text="${tournament.customLocation}" onclick="openGoogleMaps(this)"></td>
+    <td hidden="hidden">
+      <span class="row-city" th:text="${tournament.city} + ',&nbsp;'"></span>
+      <span class="row-state" th:text="${tournament.state}"></span>
+    </td>
     <td th:text="${tournament.registrants}"></td>
     <td class="row-tier" th:text="${tournament.tier}"></td>
   </tr>
@@ -82,7 +86,11 @@
         <span class="row-tier" th:if="${tournament.tier != ''}" th:text="${tournament.tier}"></span>
       </div>
     </td>
-    <td class="row-location" th:text="${tournament.customLocation}"></td>
+    <td class="row-location" th:text="${tournament.customLocation}" onclick="openGoogleMaps(this)"></td>
+    <td hidden="hidden">
+      <span class="row-city" th:text="${tournament.city} + ',&nbsp;'"></span>
+      <span class="row-state" th:text="${tournament.state}"></span>
+    </td>
   </tr>
 </table>
 </body>
