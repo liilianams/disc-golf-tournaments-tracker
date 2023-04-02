@@ -3,6 +3,7 @@ package app.components;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @UtilityClass
@@ -24,6 +25,10 @@ public class Utils {
       result.append(capitalizedWord).append(" ");
     }
     return result.toString().trim();
+  }
+
+  public static LocalDateTime getCurrentTime() {
+    return LocalDateTime.now().truncatedTo(java.time.temporal.ChronoUnit.MINUTES);
   }
 
   private static String capitalizeFirstLetter(String string){

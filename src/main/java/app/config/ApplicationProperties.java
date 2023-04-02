@@ -15,6 +15,7 @@ public class ApplicationProperties {
 
   private List<String> states;
   private List<String> locations;
+  private String baseUrl;
   private Login login;
 
   @Getter

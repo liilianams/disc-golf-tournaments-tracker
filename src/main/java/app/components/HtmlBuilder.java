@@ -25,14 +25,14 @@ public class HtmlBuilder {
   private final ServletContext servletContext;
 
   String buildAllTournaments(List<Tournament> tournaments) {
-    List<Tournament> sortedTournaments = tournaments.stream().sorted(Tournament.dateComparator).toList();
+    List<Tournament> sortedTournaments = tournaments.stream().sorted(Tournament.DATE_COMPARATOR).toList();
     return buildTournamentsHtml("tournaments", sortedTournaments);
   }
 
   String buildMyTournaments(List<Tournament> tournaments) {
     List<String> myLocations = applicationProperties.getLocations();
     List<Tournament> myTournaments = tournaments.stream()
-        .sorted(Tournament.dateComparator)
+        .sorted(Tournament.DATE_COMPARATOR)
         .filter(a -> myLocations.contains(a.getCustomLocation()))
         .toList();
     return buildTournamentsHtml("my-tournaments", myTournaments);

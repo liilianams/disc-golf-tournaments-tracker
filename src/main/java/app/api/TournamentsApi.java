@@ -15,7 +15,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class TournamentsApi {
 
-  private final Scraper scraper;
+  private final TournamentsService tournamentsService;
+  private final ApplicationProperties applicationProperties;
 
   @GetMapping("/")
   public String getAllTournaments(HttpSession session, HttpServletResponse response) throws IOException {
@@ -23,7 +24,7 @@ public class TournamentsApi {
       response.sendRedirect("/login?redirect=/");
       return null;
     }
-    return scraper.getAllTournaments();
+    return tournamentsService.getAllTournaments();
   }
 
   @GetMapping("/my-tournaments")
@@ -32,7 +33,7 @@ public class TournamentsApi {
       response.sendRedirect("/login?redirect=/my-tournaments");
       return null;
     }
-    return scraper.getMyTournaments();
+    return tournamentsService.getMyTournaments();
   }
 
 }
