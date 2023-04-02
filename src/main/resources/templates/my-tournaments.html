@@ -55,7 +55,7 @@
   <tr class="tournament-row" th:each="tournament : ${tournaments}">
     <td class="row-date" th:text="${tournament.dateString}"></td>
     <td>
-      <a th:text="${tournament.name}" th:href="@{${tournament.url}}"></a>
+      <a th:text="${tournament.name}" th:href="@{${tournament.url}}" target="_blank"></a>
     </td>
     <td class="row-location" th:text="${tournament.customLocation}" onclick="openGoogleMaps(this)"></td>
     <td hidden="hidden">
@@ -78,7 +78,7 @@
       <div class="date-details" th:text="${tournament.dayOfWeek}"></div>
     </td>
     <td>
-      <a th:text="${tournament.name}" th:href="@{${tournament.url}}"></a>
+      <a th:text="${tournament.name}" th:href="@{${tournament.url}}" target="_blank"></a>
       <div class="tournament-details">
         <span>Registrants:</span>
         <span th:text="${tournament.registrants}"></span>

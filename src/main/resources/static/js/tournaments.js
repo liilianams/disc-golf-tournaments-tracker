@@ -80,7 +80,7 @@ function openGoogleMaps(event) {
   const state = encodeURIComponent(event.parentNode.querySelector('.row-state').textContent);
   const location = `${courseName}, ${city}${state}`;
   const url = `https://www.google.com/maps/search/?api=1&query=${location}`;
-  window.open(url);
+  window.open(url, '_blank');
 }
 
 function addDiscGolfCourse(courseName) {
