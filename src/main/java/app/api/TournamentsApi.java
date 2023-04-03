@@ -1,6 +1,7 @@
 package app.api;
 
-import app.components.Scraper;
+import app.components.TournamentsService;
+import app.config.ApplicationProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ public class TournamentsApi {
 
   @GetMapping("/")
   public String getAllTournaments(HttpSession session, HttpServletResponse response) throws IOException {
-    if (session.getAttribute("passwordChecked") == null) {
+    if (applicationProperties.getIsPasswordCheckEnabled() && session.getAttribute("passwordChecked") == null) {
       response.sendRedirect("/login?redirect=/");
       return null;
     }
@@ -29,7 +30,7 @@ public class TournamentsApi {
 
   @GetMapping("/my-tournaments")
   public String getMyTournaments(HttpSession session, HttpServletResponse response) throws IOException {
-    if (session.getAttribute("passwordChecked") == null) {
+    if (applicationProperties.getIsPasswordCheckEnabled() && session.getAttribute("passwordChecked") == null) {
       response.sendRedirect("/login?redirect=/my-tournaments");
       return null;
     }

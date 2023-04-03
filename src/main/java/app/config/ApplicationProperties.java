@@ -13,17 +13,11 @@ import java.util.List;
 @ConfigurationProperties
 public class ApplicationProperties {
 
+  private String loginPassword;
+  private String baseUrl;
+  private Boolean isProduction;
+  private Boolean isPasswordCheckEnabled;
   private List<String> states;
   private List<String> locations;
-  private String baseUrl;
-  private Login login;
-
-  @Getter
-  @Setter
-  public static class Login {
-
-    private String password;
-
-  }
 
 }

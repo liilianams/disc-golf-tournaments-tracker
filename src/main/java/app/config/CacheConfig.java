@@ -1,6 +1,8 @@
 package app.config;
 
 import app.components.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.EnableCaching;
@@ -16,6 +18,8 @@ import java.util.Arrays;
 @Configuration
 public class CacheConfig {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(CacheConfig.class);
+
   @Bean
   public CacheManager cacheManager() {
     SimpleCacheManager cacheManager = new SimpleCacheManager();
@@ -26,7 +30,7 @@ public class CacheConfig {
   @CacheEvict(value = "tournaments", allEntries = true)
   @Scheduled(fixedRateString = "${empty-cache-frequency}")
   public void emptyCache() {
-    System.out.println("Emptying tournaments cache at " + Utils.getCurrentTime());
+    LOGGER.info("Emptying tournaments cache at " + Utils.getCurrentTime());
   }
 
 }

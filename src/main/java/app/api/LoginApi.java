@@ -38,7 +38,7 @@ public class LoginApi {
       HttpServletResponse response,
       HttpServletRequest request
   ) throws IOException {
-    if (applicationProperties.getLogin().getPassword().equals(password)) {
+    if (applicationProperties.getLoginPassword().equals(password)) {
       session.setAttribute("passwordChecked", true);
       response.sendRedirect(Objects.requireNonNullElse(redirect, "/"));
       return "";
