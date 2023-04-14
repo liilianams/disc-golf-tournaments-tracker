@@ -1,9 +1,7 @@
 ## Disc Golf Tournaments Tracker
 
-An app that pulls information about upcoming disc golf tournaments from
-[Disc Golf Scene](https://www.discgolfscene.com/tournaments), and then displays the tournaments
-that take place in [configured](src/main/resources/application.properties) favorite states and courses 
-in a simple table format.
+Web app that display tournaments, that take place in [configured](src/main/resources/application.properties) 
+favorite states and courses, in a simple table format.
 
 ### Run locally
 Prerequisites:
@@ -13,6 +11,8 @@ Prerequisites:
 ./gradlew build
 ./gradlew bootRun
 ``` 
+App will be available on http://localhost:8080/.
+
 ### Run in Docker
 Prerequisites:
 - Docker
