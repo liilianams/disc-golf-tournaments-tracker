@@ -20,11 +20,7 @@ public class TournamentsApi {
   private final ApplicationProperties applicationProperties;
 
   @GetMapping("/")
-  public String getAllTournaments(HttpSession session, HttpServletResponse response) throws IOException {
-    if (applicationProperties.getIsPasswordCheckEnabled() && session.getAttribute("passwordChecked") == null) {
-      response.sendRedirect("/login?redirect=/");
-      return null;
-    }
+  public String getAllTournaments()  {
     return tournamentsService.getAllTournaments();
   }
 
