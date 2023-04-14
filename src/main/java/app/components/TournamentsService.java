@@ -19,12 +19,12 @@ public class TournamentsService {
   private final HtmlBuilder htmlBuilder;
   private final Scraper tournamentsScraper;
 
-  public String getAllTournaments() {
-    return htmlBuilder.buildAllTournaments(getTournaments());
+  public String getAllTournaments(Boolean isMobile) {
+    return htmlBuilder.buildAllTournaments(getTournaments(), isMobile);
   }
 
-  public String getMyTournaments() {
-    return htmlBuilder.buildMyTournaments(getTournaments());
+  public String getMyTournaments(Boolean isMobile) {
+    return htmlBuilder.buildMyTournaments(getTournaments(), isMobile);
   }
 
   private List<Tournament> getTournaments() {

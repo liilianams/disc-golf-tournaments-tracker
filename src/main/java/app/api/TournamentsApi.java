@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -20,17 +21,26 @@ public class TournamentsApi {
   private final ApplicationProperties applicationProperties;
 
   @GetMapping("/")
-  public String getAllTournaments()  {
-    return tournamentsService.getAllTournaments();
+  public String getAllTournaments(HttpServletRequest request) {
+    return tournamentsService.getAllTournaments(isMobile(request));
   }
 
   @GetMapping("/my-tournaments")
-  public String getMyTournaments(HttpSession session, HttpServletResponse response) throws IOException {
+  public String getMyTournaments(
+      HttpSession session,
+      HttpServletResponse response,
+      HttpServletRequest request
+  ) throws IOException {
     if (applicationProperties.getIsPasswordCheckEnabled() && session.getAttribute("passwordChecked") == null) {
       response.sendRedirect("/login?redirect=/my-tournaments");
       return null;
     }
-    return tournamentsService.getMyTournaments();
+    return tournamentsService.getMyTournaments(isMobile(request));
+  }
+
+  private boolean isMobile(HttpServletRequest request) {
+    String userAgent = request.getHeader("User-Agent");
+    return userAgent != null && userAgent.toLowerCase().contains("mobile");
   }
 
 }

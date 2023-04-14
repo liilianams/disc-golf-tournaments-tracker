@@ -62,7 +62,7 @@
     <button class="filter button" onclick="resetFilters()">Reset</button>
   </div>
 </div>
-<table class="desktop-view">
+<table class="desktop-view" th:if="${not isMobile}">
   <tr>
     <th>Date</th>
     <th>Competition</th>
@@ -85,7 +85,7 @@
     <td class="row-tier" th:text="${tournament.tier}"></td>
   </tr>
 </table>
-<table class="mobile-view">
+<table class="mobile-view" th:if="${isMobile}">
   <tr>
     <th>Date</th>
     <th>Competition</th>

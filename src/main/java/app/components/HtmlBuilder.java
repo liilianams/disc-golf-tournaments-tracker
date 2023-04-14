@@ -24,25 +24,25 @@ public class HtmlBuilder {
   @Autowired
   private final ServletContext servletContext;
 
-  String buildAllTournaments(List<Tournament> tournaments) {
+  String buildAllTournaments(List<Tournament> tournaments, Boolean isMobile) {
     List<Tournament> sortedTournaments = tournaments.stream().sorted(Tournament.DATE_COMPARATOR).toList();
-    return buildTournamentsHtml("tournaments", sortedTournaments);
+    return buildTournamentsHtml("tournaments", sortedTournaments, isMobile);
   }
 
-  String buildMyTournaments(List<Tournament> tournaments) {
+  String buildMyTournaments(List<Tournament> tournaments, Boolean isMobile) {
     List<String> myLocations = applicationProperties.getLocations();
     List<Tournament> myTournaments = tournaments.stream()
         .sorted(Tournament.DATE_COMPARATOR)
         .filter(a -> myLocations.contains(a.getCustomLocation()))
         .toList();
-    return buildTournamentsHtml("my-tournaments", myTournaments);
+    return buildTournamentsHtml("my-tournaments", myTournaments, isMobile);
   }
 
   public String buildLogin() {
     return buildHtml("login", Map.of());
   }
 
-  private String buildTournamentsHtml(String templateName, List<Tournament> sortedTournaments) {
+  private String buildTournamentsHtml(String templateName, List<Tournament> sortedTournaments, Boolean isMobile) {
     List<String> courses = sortedTournaments.stream().map(Tournament::getCourse).distinct().sorted().toList();
     List<String> cities = sortedTournaments.stream().map(Tournament::getCity).distinct().sorted().toList();
     List<String> states = sortedTournaments.stream().map(Tournament::getState).distinct().sorted().toList();
@@ -51,7 +51,8 @@ public class HtmlBuilder {
         "locations", applicationProperties.getLocations(),
         "courses", courses,
         "cities", cities,
-        "states", states
+        "states", states,
+        "isMobile", isMobile
     );
     return buildHtml(templateName, contextParams);
   }
