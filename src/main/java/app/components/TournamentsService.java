@@ -128,8 +128,9 @@ public class TournamentsService {
   }
 
   private String[] getLocationParts(Element element) {
-    String locationString = element.select("span:not(:containsOwn(Sat)):not(:containsOwn(sat)):containsOwn(at )").text();
-    return locationString.replace("at ", "").split(" · ");
+    String locationString = element.select("span:not(:containsOwn(Sat)):not(:containsOwn(sat))")
+        .select(":matchesOwn(\\bat\\b)").text();
+    return locationString.replaceFirst("at ", "").split(" · ");
   }
 
 }
