@@ -13,6 +13,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import javax.servlet.ServletContext;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -25,14 +26,14 @@ public class HtmlBuilder {
   private final ServletContext servletContext;
 
   String buildAllTournaments(List<Tournament> tournaments, Boolean isMobile) {
-    List<Tournament> sortedTournaments = tournaments.stream().sorted(Tournament.DATE_COMPARATOR).toList();
+    List<Tournament> sortedTournaments = tournaments.stream().sorted(Comparator.comparing(Tournament::getDate)).toList();
     return buildTournamentsHtml("tournaments", sortedTournaments, isMobile);
   }
 
   String buildMyTournaments(List<Tournament> tournaments, Boolean isMobile) {
     List<String> myLocations = applicationProperties.getLocations();
     List<Tournament> myTournaments = tournaments.stream()
-        .sorted(Tournament.DATE_COMPARATOR)
+        .sorted(Comparator.comparing(Tournament::getDate))
         .filter(a -> myLocations.contains(a.getCustomLocation()))
         .toList();
     return buildTournamentsHtml("my-tournaments", myTournaments, isMobile);

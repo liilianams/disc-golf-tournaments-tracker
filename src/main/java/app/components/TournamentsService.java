@@ -62,7 +62,7 @@ public class TournamentsService {
 
       Tournament tournament = new Tournament();
       tournament.setName(competition);
-      tournament.setDate(date.contains("-") ? null : Utils.convertToLocalDate(date));
+      tournament.setDate(Utils.convertToLocalDate(date));
       tournament.setDayOfWeek(dayOfWeek);
       tournament.setDayAndMonth(dayAndMonth);
       tournament.setDateString(date);
