@@ -13,7 +13,7 @@ public class Utils {
     String[] parts = dateString.split(" ");
     String month = parts[0];
     int monthValue = Month.valueOf(month.toUpperCase()).getValue();
-    int day = parts[1].contains("-") ? Integer.parseInt(parts[1].split("-")[0]) : Integer.parseInt(parts[1]);
+    int day = parts[1].contains("-") ? Integer.parseInt(parts[1].split("-")[1]) : Integer.parseInt(parts[1]);
 
     LocalDate currentDate = LocalDate.now();
     LocalDate parsedDate = LocalDate.of(currentDate.getYear(), monthValue, day);
