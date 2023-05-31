@@ -1,0 +1,61 @@
+{
+  "name" : "Tournaments",
+  "short_name" : "Tournaments",
+  "display" : "standalone",
+  "start_url" : "/",
+  "scope" : "/",
+  "theme_color" : "#FFFFFF",
+  "background_color" : "#FFFFFF",
+  "icons": [
+    {
+      "src": "/img/basket_60x60.jpg",
+      "sizes": "60x60",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/basket_76x76.jpg",
+      "sizes": "76x76",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/basket_80x80.jpg",
+      "sizes": "80x80",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/basket_120x120.jpg",
+      "sizes": "120x120",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/basket_152x152.jpg",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/basket_180x180.jpg",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/basket_192x192.jpg",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/basket_256x256.jpg",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/basket_384x384.jpg",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/img/basket_512x512.jpg",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
