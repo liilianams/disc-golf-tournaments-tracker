@@ -67,6 +67,12 @@ a:hover {
   margin: 0px 2px;
 }
 
+#name-filter {
+  min-width: 180px;
+  width: auto;
+  padding-left: 3.5px;
+}
+
 .button {
   padding: 1px 5px 1px 5px;
 }
@@ -123,7 +129,8 @@ a:hover {
     flex-basis: 100%;
   }
 
-  .filter-row-4 {
+  .filter-row-4,
+  .filter-row-5 {
     display: flex;
     flex: 2;
     flex-direction: row;

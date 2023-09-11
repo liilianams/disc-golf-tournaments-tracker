@@ -80,7 +80,10 @@
     </select>
   </div>
   <div class="filter-row-4">
-    <button class="filter button" onclick="resetFilters()">Reset</button>
+    <input class="filter" type="text" id="name-filter" placeholder="All Competitions" onkeyup="filterTournamentsByName()">
+  </div>
+  <div class="filter-row-5">
+    <button class="filter button" id="reset-button" onclick="resetFilters()">Reset</button>
   </div>
 </div>
 <table class="desktop-view" th:if="${not isMobile}">
@@ -118,7 +121,7 @@
       <div class="date-details" th:text="${tournament.dayOfWeek}"></div>
     </td>
     <td>
-      <a th:text="${tournament.name}" th:href="@{${tournament.url}}" target="_blank"></a>
+      <a class="row-tournament-name" th:text="${tournament.name}" th:href="@{${tournament.url}}" target="_blank"></a>
       <div class="tournament-details">
         <span>Registrants:</span>
         <span th:text="${tournament.registrants}"></span>

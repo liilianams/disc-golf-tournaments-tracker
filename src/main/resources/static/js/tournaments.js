@@ -4,6 +4,7 @@ function resetFilters() {
   document.getElementById("state-filter").selectedIndex = 0;
   document.getElementById("month-filter").selectedIndex = 0;
   document.getElementById("tier-filter").selectedIndex = 0;
+  document.getElementById("name-filter").value = "";
   filterTournaments();
 }
 
@@ -22,12 +23,28 @@ function validateTier(rowTier, tier) {
   return rowTier?.includes(tier);
 }
 
+function filterTournamentsByName() {
+  const name = document.getElementById('name-filter').value.toLowerCase();
+  const rows = document.querySelectorAll('.tournament-row');
+
+  rows.forEach(row => {
+    const rowName = row.querySelector('.row-tournament-name').textContent.toLowerCase();
+
+    if (rowName.includes(name)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+
 function filterTournaments() {
   const course = document.getElementById('course-filter').value;
   const city = document.getElementById('city-filter').value;
   const state = document.getElementById('state-filter').value;
   const month = document.getElementById('month-filter').value;
   const tier = document.getElementById('tier-filter').value;
+  const name = document.getElementById('name-filter').value.toLowerCase();
   const rows = document.querySelectorAll('.tournament-row');
 
   rows.forEach(row => {
@@ -36,13 +53,15 @@ function filterTournaments() {
     const rowState = row.querySelector('.row-state').textContent;
     const rowMonth = row.querySelector('.row-date').textContent.split(' ')[0];
     const rowTier = row.querySelector('.row-tier')?.textContent;
+    const rowName = row.querySelector('.row-tournament-name').textContent.toLowerCase();
 
     if (
       (!month || rowMonth.includes(month)) &&
       (!tier || validateTier(rowTier, tier)) &&
       (!city || rowCity.includes(city)) &&
       (!state || rowState.includes(state)) &&
-      (!course || rowCourse.includes(course))
+      (!course || rowCourse.includes(course)) &&
+      (!name || rowName.includes(name))
     ) {
       row.style.display = '';
     } else {
