@@ -31,6 +31,10 @@ td {
   padding: 4px 8px;
 }
 
+td:first-child {
+  width: 13%;
+}
+
 .row-location,
 .row-course,
 a {
