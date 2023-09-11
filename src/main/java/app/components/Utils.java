@@ -52,6 +52,13 @@ public class Utils {
     return parsedDate;
   }
 
+  /**
+   * Capitalizes the first letter of each word in the input string and returns the result.
+   * If the input string is blank, it is returned as is.
+   *
+   * @param  input the input string to be capitalized
+   * @return       the input string with the first letter of each word capitalized
+   */
   static String capitalize(String input) {
     if (input.isBlank()) {
       return input;
@@ -65,6 +72,11 @@ public class Utils {
     return result.toString().trim();
   }
 
+  /**
+   * Retrieves the current local date and time, truncated to the nearest minute.
+   *
+   * @return the current local date and time truncated to minutes
+   */
   public static LocalDateTime getCurrentTime() {
     return LocalDateTime.now().truncatedTo(java.time.temporal.ChronoUnit.MINUTES);
   }
