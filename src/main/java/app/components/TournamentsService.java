@@ -8,6 +8,9 @@ import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +65,7 @@ public class TournamentsService {
 
       Tournament tournament = new Tournament();
       tournament.setName(competition);
-      tournament.setDate(Utils.convertToLocalDate(date));
+      tournament.setDate(Utils.convertToLocalDate(date, Clock.fixed(Instant.now(), ZoneId.of("UTC"))));
       tournament.setDayOfWeek(dayOfWeek);
       tournament.setDayAndMonth(dayAndMonth);
       tournament.setDateString(date);
