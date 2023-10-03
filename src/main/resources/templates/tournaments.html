@@ -80,7 +80,7 @@
     </select>
   </div>
   <div class="filter-row-4">
-    <input class="filter" type="text" id="name-filter" placeholder="All Competitions" onkeyup="filterTournamentsByName()">
+    <input class="filter" type="text" id="name-filter" placeholder="Search Competitions" onkeyup="filterTournamentsByName()">
   </div>
   <div class="filter-row-5">
     <button class="filter button" id="reset-button" onclick="resetFilters()">Reset</button>
@@ -105,7 +105,9 @@
       <span class="row-city" th:text="${tournament.city} + ',&nbsp;'"></span>
       <span class="row-state" th:text="${tournament.state}"></span>
     </td>
-    <td th:text="${tournament.registrants}"></td>
+    <td>
+      <a th:text="${tournament.registrants}" th:href="@{|${tournament.url}/registration|}" target="_blank"></a>
+    </td>
     <td class="row-tier" th:text="${tournament.tier}"></td>
   </tr>
 </table>
