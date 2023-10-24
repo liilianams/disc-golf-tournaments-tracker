@@ -12,7 +12,7 @@ function resetMyFilters() {
   document.getElementById("location-filter").selectedIndex = 0;
   document.getElementById("month-filter").selectedIndex = 0;
   document.getElementById("tier-filter").selectedIndex = 0;
-  filterMyTournaments();
+  filterFavoriteTournaments();
 }
 
 function validateTier(rowTier, tier) {
@@ -70,7 +70,7 @@ function filterTournaments() {
   });
 }
 
-function filterMyTournaments() {
+function filterFavoriteTournaments() {
   const location = document.getElementById('location-filter').value;
   const month = document.getElementById('month-filter').value;
   const tier = document.getElementById('tier-filter').value;

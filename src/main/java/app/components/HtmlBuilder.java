@@ -30,13 +30,13 @@ public class HtmlBuilder {
     return buildTournamentsHtml("tournaments", sortedTournaments, isMobile);
   }
 
-  String buildMyTournaments(List<Tournament> tournaments, Boolean isMobile) {
+  String buildFavoriteTournaments(List<Tournament> tournaments, Boolean isMobile) {
     List<String> myLocations = applicationProperties.getFavoriteLocations();
-    List<Tournament> myTournaments = tournaments.stream()
+    List<Tournament> favoriteTournaments = tournaments.stream()
         .sorted(Comparator.comparing(Tournament::getDate))
         .filter(a -> myLocations.contains(a.getCustomLocation()))
         .toList();
-    return buildTournamentsHtml("my-tournaments", myTournaments, isMobile);
+    return buildTournamentsHtml("favorite-tournaments", favoriteTournaments, isMobile);
   }
 
   public String buildLogin() {

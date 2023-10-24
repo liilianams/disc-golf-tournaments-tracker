@@ -25,17 +25,17 @@ public class TournamentsApi {
     return tournamentsService.getAllTournaments(isMobile(request));
   }
 
-  @GetMapping("/my-tournaments")
-  public String getMyTournaments(
+  @GetMapping("/favorites")
+  public String getFavoriteTournaments(
       HttpSession session,
       HttpServletResponse response,
       HttpServletRequest request
   ) throws IOException {
     if (applicationProperties.getIsPasswordCheckEnabled() && session.getAttribute("passwordChecked") == null) {
-      response.sendRedirect("/login?redirect=/my-tournaments");
+      response.sendRedirect("/login?redirect=/favorites");
       return null;
     }
-    return tournamentsService.getMyTournaments(isMobile(request));
+    return tournamentsService.getFavoriteTournaments(isMobile(request));
   }
 
   private boolean isMobile(HttpServletRequest request) {

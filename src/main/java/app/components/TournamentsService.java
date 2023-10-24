@@ -26,8 +26,8 @@ public class TournamentsService {
     return htmlBuilder.buildAllTournaments(getTournaments(), isMobile);
   }
 
-  public String getMyTournaments(Boolean isMobile) {
-    return htmlBuilder.buildMyTournaments(getTournaments(), isMobile);
+  public String getFavoriteTournaments(Boolean isMobile) {
+    return htmlBuilder.buildFavoriteTournaments(getTournaments(), isMobile);
   }
 
   private List<Tournament> getTournaments() {
