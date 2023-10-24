@@ -1,8 +1,9 @@
 ## Disc Golf Tournaments Tracker
 
-Web app that displays upcoming dic golf tournaments that take place in [configured](src/main/resources/application.properties) states in a simple table format.
+Web app that displays upcoming dic golf tournaments that take place in [configured](src/main/resources/application.properties#L8) states in a simple table format.
 
-Available at [tournaments-tracker.fly.dev](https://tournaments-tracker.fly.dev/)
+Available at [tournaments-tracker.fly.dev](https://tournaments-tracker.fly.dev/). 
+Tournaments taking place at [configured](src/main/resources/application.properties#L9) favorite courses are available at [/favorites](https://tournaments-tracker.fly.dev/favorites).
 
 ### Run locally
 Prerequisites:
