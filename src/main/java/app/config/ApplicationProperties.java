@@ -18,6 +18,6 @@ public class ApplicationProperties {
   private Boolean isProduction;
   private Boolean isPasswordCheckEnabled;
   private List<String> states;
-  private List<String> locations;
+  private List<String> favoriteLocations;
 
 }

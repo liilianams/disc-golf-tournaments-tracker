@@ -98,7 +98,7 @@ public class TournamentsService {
 
   private String getCustomLocation(Element element) {
     String competition = element.text().toLowerCase();
-    for (String searchString : applicationProperties.getLocations()) {
+    for (String searchString : applicationProperties.getFavoriteLocations()) {
       if (competition.contains(searchString.toLowerCase())) {
         return Utils.capitalize(searchString);
       }

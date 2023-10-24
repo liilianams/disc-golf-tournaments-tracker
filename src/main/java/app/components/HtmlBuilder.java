@@ -31,7 +31,7 @@ public class HtmlBuilder {
   }
 
   String buildMyTournaments(List<Tournament> tournaments, Boolean isMobile) {
-    List<String> myLocations = applicationProperties.getLocations();
+    List<String> myLocations = applicationProperties.getFavoriteLocations();
     List<Tournament> myTournaments = tournaments.stream()
         .sorted(Comparator.comparing(Tournament::getDate))
         .filter(a -> myLocations.contains(a.getCustomLocation()))
@@ -49,7 +49,7 @@ public class HtmlBuilder {
     List<String> states = sortedTournaments.stream().map(Tournament::getState).distinct().sorted().toList();
     Map<String, Object> contextParams = Map.of(
         "tournaments", sortedTournaments,
-        "locations", applicationProperties.getLocations(),
+        "locations", applicationProperties.getFavoriteLocations(),
         "courses", courses,
         "cities", cities,
         "states", states,
