@@ -23,19 +23,27 @@ function validateTier(rowTier, tier) {
   return rowTier?.includes(tier);
 }
 
-function filterTournamentsByName() {
-  const name = document.getElementById('name-filter').value.toLowerCase();
-  const rows = document.querySelectorAll('.tournament-row');
+function filterTournamentsByNameCourseLocation() {
+    const searchTerm = document.getElementById('name-filter').value.toLowerCase();
+    const rows = document.querySelectorAll('.tournament-row');
 
-  rows.forEach(row => {
-    const rowName = row.querySelector('.row-tournament-name').textContent.toLowerCase();
+    rows.forEach(row => {
+        const rowName = row.querySelector('.row-tournament-name').textContent.toLowerCase();
+        const rowCourse = row.querySelector('.row-course').textContent.toLowerCase();
+        const rowCity = row.querySelector('.row-city').textContent.toLowerCase();
+        const rowState = row.querySelector('.row-state').textContent.toLowerCase();
+        const rowLocation = `${rowCity}, ${rowState}`;
 
-    if (rowName.includes(name)) {
-      row.style.display = '';
-    } else {
-      row.style.display = 'none';
-    }
-  });
+        if (
+            rowName.includes(searchTerm) ||
+            rowCourse.includes(searchTerm) ||
+            rowLocation.includes(searchTerm)
+        ) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
 }
 
 function filterTournaments() {
