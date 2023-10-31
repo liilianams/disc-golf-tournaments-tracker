@@ -3,7 +3,7 @@
 }
 
 .desktop-view {
-  display: flex;
+  display: table;
 }
 
 div {
@@ -59,15 +59,22 @@ a:hover {
 }
 
 .filters {
-  display: inline-flex;
+  display: flex; /* Changed from inline-flex to flex */
   margin: 10px 0;
   font-size: 14px;
+  width: 100%; /* Ensures the filters container spans the entire width */
 }
 
 .filter-row-1,
 .filter-row-2,
-.filter-row-3 {
+.filter-row-3,
+.filter-row-5 {
   display: flex;
+}
+
+.filter-row-4 {
+  display: flex;
+  flex-grow: 1;
 }
 
 .filter {
@@ -77,7 +84,7 @@ a:hover {
 
 #name-filter {
   min-width: 180px;
-  width: auto;
+  width: 100%;
   padding-left: 3.5px;
 }
 
@@ -96,7 +103,7 @@ a:hover {
 @media screen and (max-width: 900px) {
 
   .mobile-view {
-    display: flex;
+    display: table;
   }
 
   .desktop-view {
