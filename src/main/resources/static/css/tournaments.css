@@ -110,7 +110,7 @@ a:hover {
   }
 
   td:first-child {
-    width: 16%;
+    white-space: nowrap;
   }
 
   .row-tournament-name {
