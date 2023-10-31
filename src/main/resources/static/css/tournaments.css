@@ -32,7 +32,7 @@ td {
 }
 
 td:first-child {
-  width: 13%;
+  width: 12%;
 }
 
 .row-location,
@@ -90,6 +90,10 @@ a:hover {
   td {
     font-size: 12px;
     padding: 2px 4px;
+  }
+
+  td:first-child {
+    width: 16%;
   }
 
   .row-tournament-name {

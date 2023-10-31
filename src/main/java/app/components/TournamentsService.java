@@ -49,9 +49,10 @@ public class TournamentsService {
     for (Element element : tournamentsElements) {
       String date = getDate(element);
       String dayOfWeek = getDayOfWeek(date);
-      String dayAndMonth = getDayAndMonth(date);
+      String dayAndMonth = getMonthAndDay(date);
       String competition = getCompetition(element);
       String registrants = element.select("span.info:contains(Registrants)").text().replace("Registrants: ", "");
+      boolean isRegistrationOpen = getIsRegistrationOpen(element);
       String tier = element.select("span.info.ts").text();
       String customLocation = getCustomLocation(element);
       String url = getUrl(element);
@@ -70,6 +71,7 @@ public class TournamentsService {
       tournament.setDayAndMonth(dayAndMonth);
       tournament.setDateString(date);
       tournament.setRegistrants(registrants.isBlank() ? 0 : Integer.parseInt(registrants));
+      tournament.setIsRegistrationOpen(isRegistrationOpen);
       tournament.setTier(tier);
       tournament.setCourse(course);
       tournament.setCity(city);
@@ -82,13 +84,14 @@ public class TournamentsService {
     return result;
   }
 
-  private String getDayAndMonth(String date) {
+  private String getMonthAndDay(String date) {
     String[] dateParts = date.split(" ");
-    return dateParts[0] + " " + dateParts[1];
+    return dateParts[0].substring(0, 3) + " " + dateParts[1];
   }
 
   private String getDayOfWeek(String date) {
-    return date.split(" ")[2];
+    String dayOfWeek = date.split(" ")[2];
+    return dayOfWeek.contains("-") ? dayOfWeek : dayOfWeek.substring(0, 3);
   }
 
   private String getUrl(Element element) {
@@ -134,6 +137,10 @@ public class TournamentsService {
     String locationString = element.select("span:not(:containsOwn(Sat)):not(:containsOwn(sat))")
         .select(":matchesOwn(\\bat\\b)").text();
     return locationString.replaceFirst("at ", "").split(" · ");
+  }
+
+  private boolean getIsRegistrationOpen(Element element) {
+    return !element.select(".trego").isEmpty();
   }
 
 }

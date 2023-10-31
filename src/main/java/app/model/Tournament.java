@@ -17,6 +17,7 @@ public class Tournament {
   private String dayAndMonth;
   private String dayOfWeek;
   private Integer registrants;
+  private Boolean isRegistrationOpen;
   private String tier;
   private String course;
   private String city;

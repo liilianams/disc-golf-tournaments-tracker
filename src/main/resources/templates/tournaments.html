@@ -96,7 +96,7 @@
     <th>Tier</th>
   </tr>
   <tr class="tournament-row" th:each="tournament : ${tournaments}">
-    <td class="row-date" th:text="${tournament.dateString}"></td>
+    <td class="row-date" th:text="${tournament.dayAndMonth + ' ' + tournament.dayOfWeek}"></td>
     <td class="row-tournament-name">
       <a th:text="${tournament.name}" th:href="@{${tournament.url}}" target="_blank"></a>
     </td>
@@ -106,7 +106,11 @@
       <span class="row-state" th:text="${tournament.state}"></span>
     </td>
     <td>
-      <a th:text="${tournament.registrants}" th:href="@{|${tournament.url}/registration|}" target="_blank"></a>
+      <a th:if="${tournament.isRegistrationOpen | tournament.registrants != 0}"
+         th:text="${tournament.registrants}"
+         th:href="@{|${tournament.url}/registration|}"
+         target="_blank"
+      ></a>
     </td>
     <td class="row-tier" th:text="${tournament.tier}"></td>
   </tr>
@@ -125,9 +129,10 @@
     <td>
       <a class="row-tournament-name" th:text="${tournament.name}" th:href="@{${tournament.url}}" target="_blank"></a>
       <div class="tournament-details">
-        <span>Registrants:</span>
-        <span th:text="${tournament.registrants}"></span>
-        <span th:if="${tournament.tier != ''}">&nbsp;|&nbsp;Tier:</span>
+        <span th:if="${tournament.isRegistrationOpen || tournament.registrants != 0}">Registrants:</span>
+        <span th:if="${tournament.isRegistrationOpen || tournament.registrants != 0}" th:text="${tournament.registrants}"></span>
+        <span th:if="${(tournament.isRegistrationOpen || tournament.registrants != 0) && tournament.tier != ''}">&nbsp;|&nbsp;</span>
+        <span th:if="${tournament.tier != ''}">Tier:</span>
         <span class="row-tier" th:if="${tournament.tier != ''}" th:text="${tournament.tier}"></span>
       </div>
     </td>
@@ -141,7 +146,7 @@
   </tr>
 </table>
 <footer>
-  <div class="footer">tournaments.tracker@gmail.com</div>
+  <div class="footer"></div>
 </footer>
 </body>
 </html>
