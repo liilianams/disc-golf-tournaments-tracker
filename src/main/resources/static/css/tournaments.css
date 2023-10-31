@@ -1,3 +1,11 @@
+.mobile-view {
+  display: none;
+}
+
+.desktop-view {
+  display: flex;
+}
+
 div {
   margin: 0;
   border: 0;
@@ -85,7 +93,16 @@ a:hover {
   text-align: left;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
+
+  .mobile-view {
+    display: flex;
+  }
+
+  .desktop-view {
+    display: none;
+  }
+
   th,
   td {
     font-size: 12px;

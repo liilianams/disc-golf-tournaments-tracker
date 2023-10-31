@@ -22,12 +22,12 @@ public class TournamentsService {
   private final HtmlBuilder htmlBuilder;
   private final Scraper tournamentsScraper;
 
-  public String getAllTournaments(Boolean isMobile) {
-    return htmlBuilder.buildAllTournaments(getTournaments(), isMobile);
+  public String getAllTournaments() {
+    return htmlBuilder.buildAllTournaments(getTournaments());
   }
 
-  public String getFavoriteTournaments(Boolean isMobile) {
-    return htmlBuilder.buildFavoriteTournaments(getTournaments(), isMobile);
+  public String getFavoriteTournaments() {
+    return htmlBuilder.buildFavoriteTournaments(getTournaments());
   }
 
   private List<Tournament> getTournaments() {

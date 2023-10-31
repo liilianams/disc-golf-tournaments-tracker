@@ -25,25 +25,25 @@ public class HtmlBuilder {
   @Autowired
   private final ServletContext servletContext;
 
-  String buildAllTournaments(List<Tournament> tournaments, Boolean isMobile) {
+  String buildAllTournaments(List<Tournament> tournaments) {
     List<Tournament> sortedTournaments = tournaments.stream().sorted(Comparator.comparing(Tournament::getDate)).toList();
-    return buildTournamentsHtml("tournaments", sortedTournaments, isMobile);
+    return buildTournamentsHtml("tournaments", sortedTournaments);
   }
 
-  String buildFavoriteTournaments(List<Tournament> tournaments, Boolean isMobile) {
+  String buildFavoriteTournaments(List<Tournament> tournaments) {
     List<String> myLocations = applicationProperties.getFavoriteLocations();
     List<Tournament> favoriteTournaments = tournaments.stream()
         .sorted(Comparator.comparing(Tournament::getDate))
         .filter(a -> myLocations.contains(a.getCustomLocation()))
         .toList();
-    return buildTournamentsHtml("favorite-tournaments", favoriteTournaments, isMobile);
+    return buildTournamentsHtml("favorite-tournaments", favoriteTournaments);
   }
 
   public String buildLogin() {
     return buildHtml("login", Map.of());
   }
 
-  private String buildTournamentsHtml(String templateName, List<Tournament> sortedTournaments, Boolean isMobile) {
+  private String buildTournamentsHtml(String templateName, List<Tournament> sortedTournaments) {
     List<String> courses = sortedTournaments.stream().map(Tournament::getCourse).distinct().sorted().toList();
     List<String> cities = sortedTournaments.stream().map(Tournament::getCity).distinct().sorted().toList();
     List<String> states = sortedTournaments.stream().map(Tournament::getState).distinct().sorted().toList();
@@ -52,8 +52,7 @@ public class HtmlBuilder {
         "locations", applicationProperties.getFavoriteLocations(),
         "courses", courses,
         "cities", cities,
-        "states", states,
-        "isMobile", isMobile
+        "states", states
     );
     return buildHtml(templateName, contextParams);
   }
