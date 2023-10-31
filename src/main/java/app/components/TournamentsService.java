@@ -44,7 +44,7 @@ public class TournamentsService {
     }
   }
 
-  private List<Tournament> mapToTournaments(Elements tournamentsElements) {
+  public List<Tournament> mapToTournaments(Elements tournamentsElements) {
     List<Tournament> result = new ArrayList<>();
     for (Element element : tournamentsElements) {
       String date = getDate(element);
