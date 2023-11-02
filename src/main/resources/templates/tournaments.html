@@ -33,28 +33,9 @@
 <body>
 <div class="filters">
   <div class="filter-row-1">
-    <select class="filter" id="course-filter" onchange="filterTournaments()">
-      <option value="">All Courses</option>
-      <th:block th:each="course : ${courses}">
-        <option th:value="${course}" th:text="${course}"></option>
-      </th:block>
-    </select>
+    <input class="filter" type="text" id="search-filter" placeholder="Search Competitions and Courses" onkeyup="filterTournaments()">
   </div>
   <div class="filter-row-2">
-    <select class="filter" id="city-filter" onchange="filterTournaments()">
-      <option value="">All Cities</option>
-      <th:block th:each="city : ${cities}">
-        <option th:value="${city}" th:text="${city}"></option>
-      </th:block>
-    </select>
-    <select class="filter" id="state-filter" onchange="filterTournaments()">
-      <option value="">All States</option>
-      <th:block th:each="state : ${states}">
-        <option th:value="${state}" th:text="${state}"></option>
-      </th:block>
-    </select>
-  </div>
-  <div class="filter-row-3">
     <select class="filter" id="month-filter" onchange="filterTournaments()">
       <option value="">All Months</option>
       <option value="January">January</option>
@@ -70,6 +51,12 @@
       <option value="November">November</option>
       <option value="December">December</option>
     </select>
+    <select class="filter" id="state-filter" onchange="filterTournaments()">
+      <option value="">All States</option>
+      <th:block th:each="state : ${states}">
+        <option th:value="${state}" th:text="${state}"></option>
+      </th:block>
+    </select>
     <select class="filter" id="tier-filter" onchange="filterTournaments()">
       <option value="">All Tiers</option>
       <option value="A">A</option>
@@ -79,10 +66,7 @@
       <option value="XC">XC</option>
     </select>
   </div>
-  <div class="filter-row-4">
-    <input class="filter" type="text" id="name-filter" placeholder="Search Competitions and Courses" onkeyup="filterTournamentsByNameCourseLocation()">
-  </div>
-  <div class="filter-row-5">
+  <div class="filter-row-3">
     <button class="filter button" id="reset-button" onclick="resetFilters()">Reset</button>
   </div>
 </div>

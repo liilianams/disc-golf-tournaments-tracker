@@ -59,20 +59,18 @@ a:hover {
 }
 
 .filters {
-  display: flex; /* Changed from inline-flex to flex */
+  display: flex;
   margin: 10px 0;
   font-size: 14px;
-  width: 100%; /* Ensures the filters container spans the entire width */
+  width: 100%;
 }
 
-.filter-row-1,
 .filter-row-2,
-.filter-row-3,
-.filter-row-5 {
+.filter-row-3 {
   display: flex;
 }
 
-.filter-row-4 {
+.filter-row-1 {
   display: flex;
   flex-grow: 1;
 }
@@ -82,7 +80,7 @@ a:hover {
   margin: 0px 2px;
 }
 
-#name-filter {
+#search-filter {
   min-width: 180px;
   width: 100%;
   padding-left: 3.5px;
@@ -136,13 +134,6 @@ a:hover {
     flex-wrap: wrap;
   }
 
-  .filter-row-1 {
-    display: flex;
-    flex: 2;
-    flex-direction: row;
-    flex-basis: 100%;
-  }
-
   .filter-row-2 {
     display: flex;
     flex: 1;
@@ -150,15 +141,8 @@ a:hover {
     flex-basis: 100%;
   }
 
+  .filter-row-1,
   .filter-row-3 {
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    flex-basis: 100%;
-  }
-
-  .filter-row-4,
-  .filter-row-5 {
     display: flex;
     flex: 2;
     flex-direction: row;
