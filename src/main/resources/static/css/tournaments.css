@@ -154,6 +154,11 @@ a:hover {
     flex: 1 1 100%;
     margin: 0px 2px 3px 0px;
     width: 100%;
+    min-height: 20px;
+  }
+
+  #search-filter {
+    padding-left: 6.5px;
   }
 
   .footer {
