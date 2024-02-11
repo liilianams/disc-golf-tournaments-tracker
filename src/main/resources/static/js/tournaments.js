@@ -13,12 +13,22 @@ function resetMyFilters() {
   filterFavoriteTournaments();
 }
 
-function validateTier(rowTier, tier) {
-  if (rowTier?.includes('XC') && tier === 'C') {
+function filterByTier(rowTier, filterTier) {
+  // Handle rows that don't have a tier
+  if (!rowTier) {
     return false;
   }
 
-  return rowTier?.includes(tier);
+  // Normalize filter tier
+  filterTier = filterTier.trim().concat('-tier');
+
+  // Handle tiers formatted like: 'teams · xc-tier'
+  rowTier = rowTier.replace(' · ', '/').trim();
+
+  // Handle rows that contain composite tiers like 'b/c-tier' or 'teams/xc-tier'
+  const rowTiers = rowTier.split('/').map(t => t.replace('-tier', '').concat('-tier'));
+
+  return rowTiers.includes(filterTier);
 }
 
 function filterTournaments() {
@@ -41,7 +51,7 @@ function filterTournaments() {
                               rowCourse.includes(searchTerm) || rowCity.includes(searchTerm);
     const matchesState = !stateFilter || rowState === stateFilter;
     const matchesMonth = !monthFilter || rowMonth === monthFilter;
-    const matchesTier = !tierFilter || validateTier(rowTier, tierFilter);
+    const matchesTier = !tierFilter || filterByTier(rowTier, tierFilter);
 
     if (matchesSearchTerm && matchesState && matchesMonth && matchesTier) {
       row.style.display = '';
@@ -65,7 +75,7 @@ function filterFavoriteTournaments() {
     if (
       (!location || rowLocation === location) &&
       (!month || rowMonth.includes(month)) &&
-      (!tier || validateTier(rowTier, tier))
+      (!tier || filterByTier(rowTier, tier))
     ) {
       row.style.display = '';
     } else {
