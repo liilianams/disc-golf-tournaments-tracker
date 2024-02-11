@@ -62,15 +62,15 @@ function filterTournaments() {
 }
 
 function filterFavoriteTournaments() {
-  const location = document.getElementById('location-filter').value;
-  const month = document.getElementById('month-filter').value;
-  const tier = document.getElementById('tier-filter').value;
+  const location = document.getElementById('location-filter').value.toLowerCase();
+  const month = document.getElementById('month-filter').value.toLowerCase();
+  const tier = document.getElementById('tier-filter').value.toLowerCase();
   const rows = document.querySelectorAll('.tournament-row');
 
   rows.forEach(row => {
-    const rowLocation = row.querySelector('.row-location').textContent;
-    const rowMonth = row.querySelector('.row-date').textContent.split(' ')[0];
-    const rowTier = row.querySelector('.row-tier')?.textContent;
+    const rowLocation = row.querySelector('.row-location').textContent.toLowerCase();
+    const rowMonth = row.querySelector('.row-date').textContent.split(' ')[0].toLowerCase();
+    const rowTier = row.querySelector('.row-tier')?.textContent.toLowerCase();
 
     if (
       (!location || rowLocation === location) &&
