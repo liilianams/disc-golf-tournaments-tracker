@@ -96,7 +96,7 @@ public class TournamentsService {
 
   private String getUrl(Element element) {
     Element link = element.select("a").first();
-    return applicationProperties.getBaseUrl() + link.attr("href");
+    return applicationProperties.getDgsBaseUrl() + link.attr("href");
   }
 
   private String getCustomLocation(Element element) {

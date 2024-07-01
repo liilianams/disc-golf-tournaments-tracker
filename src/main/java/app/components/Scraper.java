@@ -26,7 +26,7 @@ public class Scraper {
   @Cacheable(value = "tournaments", key = "#state")
   public Elements getTournaments(String state) {
     LOGGER.info("Getting tournaments at " + Utils.getCurrentTime() + ", not using cache");
-    String url = applicationProperties.getBaseUrl() + "/tournaments/" + state;
+    String url = applicationProperties.getDgsBaseUrl() + "/tournaments/" + state;
     try {
       Document page = applicationProperties.getIsProduction() ?
           Jsoup.connect(url).get() :

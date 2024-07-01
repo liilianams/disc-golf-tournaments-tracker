@@ -14,7 +14,7 @@ import java.util.List;
 public class ApplicationProperties {
 
   private String loginPassword;
-  private String baseUrl;
+  private String dgsBaseUrl;
   private Boolean isProduction;
   private Boolean isPasswordCheckEnabled;
   private List<String> states;
