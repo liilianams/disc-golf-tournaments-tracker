@@ -31,7 +31,7 @@ public class Scraper {
       Document page = applicationProperties.getIsProduction() ?
           Jsoup.connect(url).get() :
           getTestData(state);
-      return page.select("div.tournaments-listing-all div.tl");
+      return page.select("div#tournaments-list div.tournament-list");
     } catch (Exception e) {
       LOGGER.error(e.getMessage());
       return new Elements();

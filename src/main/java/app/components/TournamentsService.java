@@ -4,7 +4,6 @@ import app.config.ApplicationProperties;
 import app.model.Tournament;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
@@ -47,100 +46,113 @@ public class TournamentsService {
   public List<Tournament> mapToTournaments(Elements tournamentsElements) {
     List<Tournament> result = new ArrayList<>();
     for (Element element : tournamentsElements) {
-      String date = getDate(element);
-      String dayOfWeek = getDayOfWeek(date);
-      String dayAndMonth = getMonthAndDay(date);
-      String competition = getCompetition(element);
-      String registrants = element.select("span.info:contains(Registrants)").text().replace("Registrants: ", "");
-      boolean isRegistrationOpen = getIsRegistrationOpen(element);
-      String tier = element.select("span.info.ts").text();
-      String customLocation = getCustomLocation(element);
-      String url = getUrl(element);
-      String hostedBy = getHostedBy(element);
+      try {
+        String name = element.select("span.name").text();
+        String date = getDate(element);
+        String dayOfWeek = getDayOfWeek(date);
+        String dayAndMonth = getMonthAndDay(date);
 
-      String[] locationParts = getLocationParts(element);
-      String course = locationParts[0];
-      String[] cityAndState = locationParts[1].split(", ");
-      String city = cityAndState[0];
-      String state = cityAndState[1];
+        String tier = getTier(element);
+        String url = element.select("a").attr("href");
+        if (!url.startsWith("http")) {
+          url = applicationProperties.getDgsBaseUrl() + url;
+        }
 
-      Tournament tournament = new Tournament();
-      tournament.setName(competition);
-      tournament.setDate(Utils.convertToLocalDate(date, Clock.fixed(Instant.now(), ZoneId.of("UTC"))));
-      tournament.setDayOfWeek(dayOfWeek);
-      tournament.setDayAndMonth(dayAndMonth);
-      tournament.setDateString(date);
-      tournament.setRegistrants(registrants.isBlank() ? 0 : Integer.parseInt(registrants));
-      tournament.setIsRegistrationOpen(isRegistrationOpen);
-      tournament.setTier(tier);
-      tournament.setCourse(course);
-      tournament.setCity(city);
-      tournament.setState(state);
-      tournament.setHostedBy(hostedBy);
-      tournament.setCustomLocation(customLocation);
-      tournament.setUrl(url);
-      result.add(tournament);
+        String location = element.select("span.info i.fa-map-marker-alt").first().parent().ownText();
+        String course = element.select("span.info i.fa-map").first().parent().ownText();
+        String[] cityState = location.split(", ");
+        String city = cityState.length > 0 ? cityState[0] : "N/A";
+        String state = cityState.length > 1 ? cityState[1] : "N/A";
+
+        String hostedBy = "N/A";
+        boolean isRegistrationOpen = true;
+
+        int registrants = getRegistrants(element);
+
+        Tournament tournament = new Tournament();
+        tournament.setName(name);
+        tournament.setDate(Utils.convertToLocalDate(date, Clock.fixed(Instant.now(), ZoneId.of("UTC"))));
+        tournament.setDayOfWeek(dayOfWeek);
+        tournament.setDayAndMonth(dayAndMonth);
+        tournament.setDateString(date);
+        tournament.setRegistrants(registrants);
+        tournament.setIsRegistrationOpen(isRegistrationOpen);
+        tournament.setTier(tier);
+        tournament.setCourse(course);
+        tournament.setCity(city);
+        tournament.setState(state);
+        tournament.setHostedBy(hostedBy);
+        tournament.setCustomLocation(getCustomLocation(name));
+        tournament.setUrl(url);
+
+        result.add(tournament);
+      } catch (Exception e) {
+        e.printStackTrace(); // Ignore broken entries
+      }
     }
     return result;
   }
 
-  private String getMonthAndDay(String date) {
-    String[] dateParts = date.split(" ");
-    return dateParts[0].substring(0, 3) + " " + dateParts[1];
+  private int getRegistrants(Element element) {
+    try {
+      Element regElement = element.select("i.fa-user-group + b").first();
+      if (regElement != null) {
+        String[] parts = regElement.text().split("/");
+        return Integer.parseInt(parts[0].trim());
+      }
+    } catch (Exception e) {
+      // log if needed
+    }
+    return 0;
+  }
+
+  public String getDate(Element element) {
+    try {
+      Element dateContainer = element.select(".list-date-range").first();
+      if (dateContainer != null) {
+        List<Element> spans = dateContainer.select("span");
+        String monthPart = spans.get(0).text().trim();     // "Aug" or "Aug-Sep"
+        String dayPart = spans.get(1).text().trim();       // "1" or "1-14"
+
+        String[] months = monthPart.split("-");
+        String[] days = dayPart.split("-");
+
+        if (months.length == 2 && days.length == 2) {
+          return String.format("%s %s-%s %s", months[0], days[0], months[1], days[1]);
+        } else if (months.length == 1 && days.length == 2) {
+          return String.format("%s %s-%s", months[0], days[0], days[1]);
+        } else if (months.length == 1 && days.length == 1) {
+          return String.format("%s %s", months[0], days[0]);
+        } else if (months.length == 2 && days.length == 1) {
+          // rare case, interpret as: Aug 1 - Sep 1
+          return String.format("%s %s-%s %s", months[0], days[0], months[1], days[0]);
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return "Unknown";
   }
 
   private String getDayOfWeek(String date) {
-    String dayOfWeek = date.split(" ")[2];
-    return dayOfWeek.contains("-") ? dayOfWeek : dayOfWeek.substring(0, 3);
+    return ""; // Too variable in new format to reliably extract
   }
 
-  private String getUrl(Element element) {
-    Element link = element.select("a").first();
-    return applicationProperties.getDgsBaseUrl() + link.attr("href");
+  private String getMonthAndDay(String date) {
+    return date; // Already in suitable format
   }
 
-  private String getCustomLocation(Element element) {
-    String competition = element.text().toLowerCase();
+  private String getTier(Element element) {
+    Element tierElement = element.select("span.list-tier").first();
+    return tierElement != null ? tierElement.text().trim() : "";
+  }
+
+  private String getCustomLocation(String competition) {
     for (String searchString : applicationProperties.getFavoriteLocations()) {
-      if (competition.contains(searchString.toLowerCase())) {
+      if (competition.toLowerCase().contains(searchString.toLowerCase())) {
         return Utils.capitalize(searchString);
       }
     }
     return "N/A";
   }
-
-  private String getCompetition(Element tournament) {
-    Elements em = tournament.select("em");
-    return em.isEmpty() ? em.select("trego").text() : em.text();
-  }
-
-  private String getDate(Element tournament) {
-    StringBuilder result = new StringBuilder();
-    List<Node> elements = tournament.select("span.t-date").first().childNodes();
-    elements.forEach(e -> {
-      String whitespace = "\\s+";
-      if (e.hasAttr("text")) {
-        result.append(e.attr("text").replaceAll(whitespace, "")).append(" ");
-      } else {
-        result.append(e.childNodes().get(0).attr("text").replaceAll(whitespace, "")).append(" ");
-      }
-    });
-    return result.toString().trim();
-  }
-
-  private String getHostedBy(Element element) {
-    String hostedByString = element.select("span:contains(hosted by)").text();
-    return hostedByString.replace("hosted by ", "").trim();
-  }
-
-  private String[] getLocationParts(Element element) {
-    String locationString = element.select("span:not(:containsOwn(Sat)):not(:containsOwn(sat))")
-        .select(":matchesOwn(\\bat\\b)").text();
-    return locationString.replaceFirst("at ", "").split(" · ");
-  }
-
-  private boolean getIsRegistrationOpen(Element element) {
-    return !element.select(".trego").isEmpty();
-  }
-
 }

@@ -15,10 +15,10 @@ class UtilsTest {
 
   @ParameterizedTest(name = "Given date string {0}, then local date is {1}")
   @CsvSource({
-      "September 1 Friday,      2024-09-01",  // If day of month < current day of month, then date is next year
-      "September 10 Sunday,     2023-09-10",  // date == current date
-      "September 29-1 Fri-Sun,  2023-10-01",  // If last day of month > current day of month, then date is this year
-      "October 1-4 Sun-Wed,     2023-10-04"   // If last day of month > current day of month, then date is this year
+      "Sep 1,         2024-09-01",  // If day of month < current day of month, then date is next year
+      "Sep 10,        2023-09-10",  // date == current date
+      "Sep 29-Oct 1,  2023-10-01",  // If last day of month > current day of month, then date is this year
+      "Oct 1-4,       2023-10-04"   // If last day of month > current day of month, then date is this year
   })
   void convertToLocalDate(String givenDateString, String expectedDateString) {
     // Given when

@@ -4,9 +4,12 @@ import app.config.ApplicationProperties;
 import app.model.Tournament;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mock;
 
 import java.util.List;
@@ -15,8 +18,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TournamentsServiceTest {
 
-  @Mock private HtmlBuilder htmlBuilder;
-  @Mock private Scraper tournamentsScraper;
+  @Mock
+  private HtmlBuilder htmlBuilder;
+  @Mock
+  private Scraper tournamentsScraper;
 
   private TournamentsService tournamentsService;
 
@@ -25,6 +30,41 @@ class TournamentsServiceTest {
     ApplicationProperties props = new ApplicationProperties();
     props.setFavoriteLocations(List.of());
     tournamentsService = new TournamentsService(props, htmlBuilder, tournamentsScraper);
+  }
+
+  @ParameterizedTest(name = "Given date string {0}, then local date is {1}")
+  @CsvSource({
+    "Sep, 1, Sep 1",
+    "Sep-Oct, 29-1, Sep 29-Oct 1",
+    "Oct, 1-4, Oct 1-4",
+    "Sep-Oct, 1, Sep 1-Oct 1"
+  })
+  void getDate(String givenMonthString, String givenDayString, String expectedDate) {
+    // Given
+    String html = String.format(
+      """
+      <div id="tournaments-list">
+        <div class="tournament-list list-record ">
+          <div class="d-none d-lg-block list-date-range flex-shrink-0">
+            <div class="d-flex flex-column text-center">
+              <span class="text-uppercase text-muted">%s</span>
+              <span>%s</span>
+              <span class="text-uppercase text-muted">Sat-Mon</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      """, givenMonthString, givenDayString
+    );
+
+    Document page = Jsoup.parse(html);
+    Element element = page.select("div#tournaments-list div.tournament-list").get(0);
+
+    // When
+    String actualDate = tournamentsService.getDate(element);
+
+    // Then
+    assertThat(actualDate).isEqualTo(expectedDate);
   }
 
   @Test
@@ -69,7 +109,8 @@ class TournamentsServiceTest {
     assertThat(tournaments).hasSize(2);
 
     Tournament tournament = tournaments.get(0);
-    assertThat(tournament.getName()).isEqualTo("Harvest Huck (BC Provincial Championships) presented by Best Western Plus & Quality Inn - Sponsored by Discraft");
+    assertThat(tournament.getName()).isEqualTo(
+      "Harvest Huck (BC Provincial Championships) presented by Best Western Plus & Quality Inn - Sponsored by Discraft");
     assertThat(tournament.getTier()).isEqualTo("B-tier");
     assertThat(tournament.getDate().getMonthValue()).isEqualTo(10);
     assertThat(tournament.getDate().getDayOfMonth()).isEqualTo(1);
