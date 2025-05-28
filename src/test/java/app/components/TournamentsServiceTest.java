@@ -15,7 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TournamentsServiceTest {
 
-  @Mock private ApplicationProperties applicationProperties;
   @Mock private HtmlBuilder htmlBuilder;
   @Mock private Scraper tournamentsScraper;
 
