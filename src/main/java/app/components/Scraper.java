@@ -33,7 +33,7 @@ public class Scraper {
           getTestData(state);
       return page.select("div.tournaments-listing-all div.tl");
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage());
       return new Elements();
     }
   }
