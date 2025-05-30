@@ -1,5 +1,6 @@
-package app.components;
+package app.components.dgs;
 
+import app.components.Utils;
 import app.config.ApplicationProperties;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
@@ -17,15 +18,15 @@ import static java.nio.file.Path.of;
 
 @Component
 @RequiredArgsConstructor
-public class Scraper {
+public class DgsScraper {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Scraper.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(DgsScraper.class);
 
   private final ApplicationProperties applicationProperties;
 
   @Cacheable(value = "tournaments", key = "#state")
   public Elements getTournaments(String state) {
-    LOGGER.info("Getting tournaments at " + Utils.getCurrentTime() + ", not using cache");
+    LOGGER.info("Getting DGS tournaments at " + Utils.getCurrentTime() + ", not using cache");
     String url = applicationProperties.getDgsBaseUrl() + "/tournaments/" + state;
     try {
       Document page = applicationProperties.getIsProduction() ?

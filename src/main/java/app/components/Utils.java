@@ -4,11 +4,10 @@ import lombok.experimental.UtilityClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
+import java.time.*;
 import java.util.Map;
+
+import static java.time.temporal.ChronoUnit.MINUTES;
 
 @UtilityClass
 public class Utils {
@@ -40,7 +39,7 @@ public class Utils {
    * @return the parsed date as a {@link LocalDate} object (in case of a date range returns the end date)
    * @throws IllegalArgumentException if the input date string does not adhere to the expected format
    */
-  static LocalDate convertToLocalDate(String dateString, Clock clock) {
+  public static LocalDate convertToLocalDate(String dateString, Clock clock) {
     Month month;
     int day;
 
@@ -126,7 +125,25 @@ public class Utils {
    * @return the current local date and time truncated to minutes
    */
   public static LocalDateTime getCurrentTime() {
-    return LocalDateTime.now().truncatedTo(java.time.temporal.ChronoUnit.MINUTES);
+    return LocalDateTime.now(ZoneId.of("UTC")).truncatedTo(MINUTES);
+  }
+
+  /**
+   * Returns the current date in UTC.
+   *
+   * @return the current date in UTC
+   */
+  public static LocalDate getCurrentDate() {
+    return LocalDate.now(ZoneId.of("UTC"));
+  }
+
+  /**
+   * Returns the same date but next year in UTC.
+   *
+   * @return the same date next year in UTC
+   */
+  public static LocalDate getSameDateNextYear() {
+    return getCurrentDate().plusYears(1);
   }
 
   private static String capitalizeFirstLetter(String string) {

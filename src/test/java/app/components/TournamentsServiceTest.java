@@ -1,5 +1,7 @@
 package app.components;
 
+import app.components.dgs.DgsScraper;
+import app.components.dgs.DgsTournamentsParser;
 import app.config.ApplicationProperties;
 import app.model.Tournament;
 import org.jsoup.Jsoup;
@@ -14,7 +16,7 @@ import org.mockito.Mock;
 
 import java.util.List;
 
-import static app.components.TournamentsService.ParsedDate;
+import static app.components.dgs.DgsTournamentsParser.ParsedDate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class TournamentsServiceTest {
@@ -22,15 +24,15 @@ class TournamentsServiceTest {
   @Mock
   private HtmlBuilder htmlBuilder;
   @Mock
-  private Scraper tournamentsScraper;
+  private DgsScraper tournamentsScraper;
 
-  private TournamentsService tournamentsService;
+  private DgsTournamentsParser tournamentsService;
 
   @BeforeEach
   void setUp() {
     ApplicationProperties props = new ApplicationProperties();
     props.setFavoriteLocations(List.of());
-    tournamentsService = new TournamentsService(props, htmlBuilder, tournamentsScraper);
+    tournamentsService = new DgsTournamentsParser(props, htmlBuilder, tournamentsScraper);
   }
 
   @ParameterizedTest(name = "Given date string {0}, then local date is {1}")
