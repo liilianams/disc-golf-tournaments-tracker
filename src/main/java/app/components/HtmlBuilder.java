@@ -34,7 +34,7 @@ public class HtmlBuilder {
     List<String> myLocations = applicationProperties.getFavoriteLocations();
     List<Tournament> favoriteTournaments = tournaments.stream()
         .sorted(Comparator.comparing(Tournament::getDate))
-        .filter(a -> myLocations.contains(a.getCustomLocation()))
+        .filter(tournament -> myLocations.contains(tournament.getCourse()))
         .toList();
     return buildTournamentsHtml("favorite-tournaments", favoriteTournaments);
   }

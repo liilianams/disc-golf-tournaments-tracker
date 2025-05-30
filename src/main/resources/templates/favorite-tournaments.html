@@ -63,6 +63,7 @@
     <option value="doubles">Doubles</option>
     <option value="teams">Teams</option>
     <option value="major">Major</option>
+    <option value="elite-series">Elite Series</option>
   </select>
   <button class="filter button" onclick="resetMyFilters()">Reset</button>
   <button class="filter button" onclick="window.location.href='/'">View All Tournaments</button>
@@ -76,11 +77,11 @@
     <th>Tier</th>
   </tr>
   <tr class="tournament-row" th:each="tournament : ${tournaments}">
-    <td class="row-date" th:text="${tournament.dayAndMonth + ' ' + tournament.dayOfWeek}"></td>
+    <td class="row-date" th:text="${tournament.dayAndMonth + ', ' + tournament.dayOfWeek}"></td>
     <td>
       <a th:text="${tournament.name}" th:href="@{${tournament.url}}" target="_blank"></a>
     </td>
-    <td class="row-location" th:text="${tournament.customLocation}" onclick="openGoogleMaps(this)"></td>
+    <td class="row-location" th:text="${tournament.course}" onclick="openGoogleMaps(this)"></td>
     <td hidden="hidden">
       <span class="row-city" th:text="${tournament.city} + ',&nbsp;'"></span>
       <span class="row-state" th:text="${tournament.state}"></span>
@@ -116,7 +117,7 @@
         <span class="row-tier" th:if="${tournament.tier != ''}" th:text="${tournament.tier}"></span>
       </div>
     </td>
-    <td class="row-location" th:text="${tournament.customLocation}" onclick="openGoogleMaps(this)"></td>
+    <td class="row-location" th:text="${tournament.course}" onclick="openGoogleMaps(this)"></td>
     <td hidden="hidden">
       <span class="row-city" th:text="${tournament.city} + ',&nbsp;'"></span>
       <span class="row-state" th:text="${tournament.state}"></span>

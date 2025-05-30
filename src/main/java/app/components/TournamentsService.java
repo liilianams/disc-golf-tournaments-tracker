@@ -5,6 +5,8 @@ import app.model.Tournament;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.Clock;
@@ -16,6 +18,8 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class TournamentsService {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(TournamentsService.class);
 
   private final ApplicationProperties applicationProperties;
   private final HtmlBuilder htmlBuilder;
@@ -38,7 +42,7 @@ public class TournamentsService {
       Elements tournamentsElements = tournamentsScraper.getTournaments(state);
       return mapToTournaments(tournamentsElements);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error(e.getMessage());
       return List.of();
     }
   }
@@ -48,9 +52,9 @@ public class TournamentsService {
     for (Element element : tournamentsElements) {
       try {
         String name = element.select("span.name").text();
-        String date = getDate(element);
-        String dayOfWeek = getDayOfWeek(date);
-        String dayAndMonth = getMonthAndDay(date);
+        ParsedDate parsedDate = getDate(element);
+        String dayAndMonth = parsedDate.dayAndMonth();
+        String dayOfWeek = parsedDate.dayOfWeek();
 
         String tier = getTier(element);
         String url = element.select("a").attr("href");
@@ -64,30 +68,26 @@ public class TournamentsService {
         String city = cityState.length > 0 ? cityState[0] : "N/A";
         String state = cityState.length > 1 ? cityState[1] : "N/A";
 
-        String hostedBy = "N/A";
-        boolean isRegistrationOpen = true;
-
+        boolean isRegistrationOpen = isRegistrationOpen(element);
         int registrants = getRegistrants(element);
 
         Tournament tournament = new Tournament();
         tournament.setName(name);
-        tournament.setDate(Utils.convertToLocalDate(date, Clock.fixed(Instant.now(), ZoneId.of("UTC"))));
+        tournament.setDate(Utils.convertToLocalDate(parsedDate.dayAndMonth, Clock.fixed(Instant.now(), ZoneId.of("UTC"))));
         tournament.setDayOfWeek(dayOfWeek);
         tournament.setDayAndMonth(dayAndMonth);
-        tournament.setDateString(date);
+        tournament.setDateString(parsedDate.toString());
         tournament.setRegistrants(registrants);
         tournament.setIsRegistrationOpen(isRegistrationOpen);
         tournament.setTier(tier);
         tournament.setCourse(course);
         tournament.setCity(city);
         tournament.setState(state);
-        tournament.setHostedBy(hostedBy);
-        tournament.setCustomLocation(getCustomLocation(name));
         tournament.setUrl(url);
 
         result.add(tournament);
       } catch (Exception e) {
-        e.printStackTrace(); // Ignore broken entries
+        LOGGER.error(e.getMessage());
       }
     }
     return result;
@@ -101,45 +101,50 @@ public class TournamentsService {
         return Integer.parseInt(parts[0].trim());
       }
     } catch (Exception e) {
-      // log if needed
+      LOGGER.error(e.getMessage());
     }
     return 0;
   }
 
-  public String getDate(Element element) {
+  public ParsedDate getDate(Element element) {
     try {
       Element dateContainer = element.select(".list-date-range").first();
       if (dateContainer != null) {
         List<Element> spans = dateContainer.select("span");
+
         String monthPart = spans.get(0).text().trim();     // "Aug" or "Aug-Sep"
         String dayPart = spans.get(1).text().trim();       // "1" or "1-14"
+        String weekDayPart = spans.get(2).text().trim();   // "Mon" or "Mon-Wed"
 
-        String[] months = monthPart.split("-");
-        String[] days = dayPart.split("-");
+        String dayAndMonth = getDayAndMonthString(monthPart, dayPart);
 
-        if (months.length == 2 && days.length == 2) {
-          return String.format("%s %s-%s %s", months[0], days[0], months[1], days[1]);
-        } else if (months.length == 1 && days.length == 2) {
-          return String.format("%s %s-%s", months[0], days[0], days[1]);
-        } else if (months.length == 1 && days.length == 1) {
-          return String.format("%s %s", months[0], days[0]);
-        } else if (months.length == 2 && days.length == 1) {
-          // rare case, interpret as: Aug 1 - Sep 1
-          return String.format("%s %s-%s %s", months[0], days[0], months[1], days[0]);
-        }
+        return new ParsedDate(dayAndMonth, weekDayPart);
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error("Failed to parse date", e);
     }
-    return "Unknown";
+    return new ParsedDate("Invalid date", "");
   }
 
-  private String getDayOfWeek(String date) {
-    return ""; // Too variable in new format to reliably extract
-  }
+  private String getDayAndMonthString(String monthPart, String dayPart) {
+    String[] months = monthPart.split("-");
+    String[] days = dayPart.split("-");
 
-  private String getMonthAndDay(String date) {
-    return date; // Already in suitable format
+    String dayAndMonth;
+
+    if (months.length == 2 && days.length == 2) {
+      dayAndMonth = String.format("%s %s-%s %s", months[0], days[0], months[1], days[1]);
+    } else if (months.length == 1 && days.length == 2) {
+      dayAndMonth = String.format("%s %s-%s", months[0], days[0], days[1]);
+    } else if (months.length == 1 && days.length == 1) {
+      dayAndMonth = String.format("%s %s", months[0], days[0]);
+    } else if (months.length == 2 && days.length == 1) {
+      dayAndMonth = String.format("%s %s-%s %s", months[0], days[0], months[1], days[0]);
+    } else {
+      // rare case, interpret as: Aug 1-Sep 1
+      dayAndMonth = String.format("%s %s-%s %s", months[0], days[0], months[1], days[0]);
+    }
+    return dayAndMonth;
   }
 
   private String getTier(Element element) {
@@ -147,12 +152,16 @@ public class TournamentsService {
     return tierElement != null ? tierElement.text().trim() : "";
   }
 
-  private String getCustomLocation(String competition) {
-    for (String searchString : applicationProperties.getFavoriteLocations()) {
-      if (competition.toLowerCase().contains(searchString.toLowerCase())) {
-        return Utils.capitalize(searchString);
-      }
-    }
-    return "N/A";
+  private boolean isRegistrationOpen(Element tournamentDiv) {
+    return tournamentDiv.select("i.fas.fa-play.list-reg-open").first() != null;
   }
+
+  public record ParsedDate(String dayAndMonth, String dayOfWeek) {
+
+    @Override
+    public String toString() {
+      return dayAndMonth + " " + dayOfWeek;
+    }
+  }
+
 }

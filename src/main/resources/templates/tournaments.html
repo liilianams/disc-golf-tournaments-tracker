@@ -66,6 +66,7 @@
       <option value="doubles">Doubles</option>
       <option value="teams">Teams</option>
       <option value="major">Major</option>
+      <option value="elite-series">Elite Series</option>
     </select>
   </div>
   <div class="filter-row-3">
@@ -82,7 +83,7 @@
     <th>Tier</th>
   </tr>
   <tr class="tournament-row" th:each="tournament : ${tournaments}">
-    <td class="row-date" th:text="${tournament.dayAndMonth + ' ' + tournament.dayOfWeek}"></td>
+    <td class="row-date" th:text="${tournament.dayAndMonth + ', ' + tournament.dayOfWeek}"></td>
     <td class="row-tournament-name">
       <a th:text="${tournament.name}" th:href="@{${tournament.url}}" target="_blank"></a>
     </td>
