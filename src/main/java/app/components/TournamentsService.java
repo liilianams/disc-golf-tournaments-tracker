@@ -52,15 +52,13 @@ public class TournamentsService {
     for (Element element : tournamentsElements) {
       try {
         String name = element.select("span.name").text();
+
         ParsedDate parsedDate = getDate(element);
         String dayAndMonth = parsedDate.dayAndMonth();
         String dayOfWeek = parsedDate.dayOfWeek();
 
         String tier = getTier(element);
-        String url = element.select("a").attr("href");
-        if (!url.startsWith("http")) {
-          url = applicationProperties.getDgsBaseUrl() + url;
-        }
+        String url = getUrl(element);
 
         String location = element.select("span.info i.fa-map-marker-alt").first().parent().ownText();
         String course = element.select("span.info i.fa-map").first().parent().ownText();
@@ -91,6 +89,11 @@ public class TournamentsService {
       }
     }
     return result;
+  }
+
+  private String getUrl(Element element) {
+    String url = element.select("a").attr("href");
+    return !url.startsWith("http") ? applicationProperties.getDgsBaseUrl() + url : url;
   }
 
   private int getRegistrants(Element element) {
