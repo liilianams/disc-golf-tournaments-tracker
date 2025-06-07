@@ -42,13 +42,12 @@ function filterTournaments() {
   rows.forEach(row => {
     const rowName = row.querySelector('.row-tournament-name').textContent.toLowerCase();
     const rowCourse = row.querySelector('.row-course').textContent.toLowerCase();
-    const rowCity = row.querySelector('.row-city').textContent.toLowerCase();
-    const rowState = row.querySelector('.row-state').textContent.toLowerCase();
+    const rowLocation = row.querySelector('.row-location-details').textContent.toLowerCase();
     const rowMonth = row.querySelector('.row-date').textContent.split(' ')[0].toLowerCase();
     const rowTier = row.querySelector('.row-tier')?.textContent.toLowerCase();
 
     const matchesSearchTerm = !searchTerm || rowName.includes(searchTerm) ||
-                              rowCourse.includes(searchTerm) || rowCity.includes(searchTerm);
+                              rowCourse.includes(searchTerm) || rowLocation.includes(searchTerm);
     const matchesState = !stateFilter || rowState === stateFilter;
     const matchesMonth = !monthFilter || rowMonth === monthFilter;
     const matchesTier = !tierFilter || filterByTier(rowTier, tierFilter);
@@ -84,19 +83,28 @@ function filterFavoriteTournaments() {
   });
 }
 
+function safeTextContent(element, selector) {
+  return (element.querySelector(selector)?.textContent || "").toLowerCase();
+}
+
 function openGoogleMaps(event) {
-  const courseName = encodeURIComponent(addDiscGolfCourse(event.textContent));
-  const city = encodeURIComponent(event.parentNode.querySelector('.row-city').textContent);
-  const state = encodeURIComponent(event.parentNode.querySelector('.row-state').textContent);
-  const location = `${courseName}, ${city}${state}`;
-  const url = `https://www.google.com/maps/search/?api=1&query=${location}`;
+  console.log(event)
+  const courseText = event.textContent.split('→')[0].trim();
+  console.log(courseText)
+  const courseName = encodeURIComponent(addDiscGolfCourse(courseText));
+  console.log(courseName)
+  const location = encodeURIComponent(event.parentNode.querySelector('.row-location-details').textContent);
+  const query = `${courseName}, ${location}`;
+  const url = `https://www.google.com/maps/search/?api=1&query=${query}`;
   window.open(url, '_blank');
+  console.log(url)
 }
 
 function addDiscGolfCourse(courseName) {
   const hasDiscGolfCourse = courseName.toLowerCase().includes('golf') ||
     courseName.toLowerCase().includes('course') ||
-    courseName.toLowerCase().includes('park');
+    courseName.toLowerCase().includes('park') ||
+    courseName.toLowerCase().includes('disc');
   if (!hasDiscGolfCourse) {
     courseName += ' Disc Golf Course';
   }

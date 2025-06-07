@@ -38,23 +38,23 @@
   <div class="filter-row-2">
     <select class="filter" id="month-filter" onchange="filterTournaments()">
       <option value="">All Months</option>
-      <option value="january">January</option>
-      <option value="february">February</option>
-      <option value="march">March</option>
-      <option value="april">April</option>
+      <option value="jan">January</option>
+      <option value="feb">February</option>
+      <option value="mar">March</option>
+      <option value="apr">April</option>
       <option value="may">May</option>
-      <option value="june">June</option>
-      <option value="july">July</option>
-      <option value="august">August</option>
-      <option value="september">September</option>
-      <option value="october">October</option>
-      <option value="november">November</option>
-      <option value="december">December</option>
+      <option value="jun">June</option>
+      <option value="jul">July</option>
+      <option value="aug">August</option>
+      <option value="sep">September</option>
+      <option value="octr">October</option>
+      <option value="nov">November</option>
+      <option value="dec">December</option>
     </select>
     <select class="filter" id="state-filter" onchange="filterTournaments()">
       <option value="">All States</option>
-      <th:block th:each="state : ${states}">
-        <option th:value="${state}" th:text="${state}"></option>
+      <th:block th:each="country : ${countries}">
+        <option th:value="${country}" th:text="${country}"></option>
       </th:block>
     </select>
     <select class="filter" id="tier-filter" onchange="filterTournaments()">
@@ -67,6 +67,7 @@
       <option value="teams">Teams</option>
       <option value="major">Major</option>
       <option value="elite-series">Elite Series</option>
+      <option value="weekly">Weekly</option>
     </select>
   </div>
   <div class="filter-row-3">
@@ -89,8 +90,7 @@
     </td>
     <td class="row-course" th:text="${tournament.course}" onclick="openGoogleMaps(this)"></td>
     <td>
-      <span class="row-city" th:text="${tournament.city} + ',&nbsp;'"></span>
-      <span class="row-state" th:text="${tournament.state}"></span>
+      <div class="row-location-details" th:text="${tournament.location}"></div>
     </td>
     <td>
       <a th:if="${tournament.isRegistrationOpen | tournament.registrants != 0}"
@@ -125,10 +125,7 @@
     </td>
     <td>
       <div class="row-course" th:text="${tournament.course}" onclick="openGoogleMaps(this)"></div>
-      <div class="location-details">
-        <span class="row-city" th:text="${tournament.city} + ',&nbsp;'"></span>
-        <span class="row-state" th:text="${tournament.state}"></span>
-      </div>
+      <div class="row-location-details" th:text="${tournament.location}"></div>
     </td>
   </tr>
 </table>

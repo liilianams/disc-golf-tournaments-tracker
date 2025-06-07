@@ -18,9 +18,9 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class DgsTournamentsParser {
+public class DgsParser {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(DgsTournamentsParser.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(DgsParser.class);
 
   private final ApplicationProperties applicationProperties;
   private final DgsScraper tournamentsScraper;
@@ -56,7 +56,7 @@ public class DgsTournamentsParser {
         String course = element.select("span.info i.fa-map").first().parent().ownText();
         String[] cityState = location.split(", ");
         String city = cityState.length > 0 ? cityState[0] : "N/A";
-        String state = cityState.length > 1 ? cityState[1] : "N/A";
+        String country = cityState.length > 1 ? cityState[1] : "N/A";
 
         boolean isRegistrationOpen = isRegistrationOpen(element);
         int registrants = getRegistrants(element);
@@ -72,7 +72,9 @@ public class DgsTournamentsParser {
         tournament.setTier(tier);
         tournament.setCourse(course);
         tournament.setCity(city);
-        tournament.setState(state);
+        tournament.setState("");
+        tournament.setCountry(country);
+        tournament.setLocation(location);
         tournament.setUrl(url);
 
         result.add(tournament);

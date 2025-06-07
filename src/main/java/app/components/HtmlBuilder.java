@@ -45,14 +45,12 @@ public class HtmlBuilder {
 
   private String buildTournamentsHtml(String templateName, List<Tournament> sortedTournaments) {
     List<String> courses = sortedTournaments.stream().map(Tournament::getCourse).distinct().sorted().toList();
-    List<String> cities = sortedTournaments.stream().map(Tournament::getCity).distinct().sorted().toList();
-    List<String> states = sortedTournaments.stream().map(Tournament::getState).distinct().sorted().toList();
+    List<String> countries = sortedTournaments.stream().map(Tournament::getCountry).distinct().sorted().toList();
     Map<String, Object> contextParams = Map.of(
         "tournaments", sortedTournaments,
-        "locations", applicationProperties.getFavoriteLocations(),
+        "favoriteLocations", applicationProperties.getFavoriteLocations(),
         "courses", courses,
-        "cities", cities,
-        "states", states
+        "countries", countries
     );
     return buildHtml(templateName, contextParams);
   }

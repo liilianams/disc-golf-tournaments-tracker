@@ -1,7 +1,7 @@
 package app.components;
 
-import app.components.dgm.DgmTournamentsParser;
-import app.components.dgs.DgsTournamentsParser;
+import app.components.dgm.DgmParser;
+import app.components.dgs.DgsParser;
 import app.model.Tournament;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,8 +14,8 @@ import java.util.List;
 public class TournamentsService {
 
   private final HtmlBuilder htmlBuilder;
-  private final DgsTournamentsParser dgsTournamentsService;
-  private final DgmTournamentsParser dgmTournamentsParser;
+  private final DgsParser dgsTournamentsService;
+  private final DgmParser dgmTournamentsParser;
 
   public String getAllTournaments() {
     return htmlBuilder.buildAllTournaments(getTournaments());

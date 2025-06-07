@@ -33,7 +33,7 @@
 <div class="filters">
   <select class="filter" id="location-filter" onchange="filterFavoriteTournaments()">
     <option value="">All Locations</option>
-    <option th:each="location : ${locations}"
+    <option th:each="location : ${favoriteLocations}"
             th:if="${location != 'N/A'}"
             th:value="${location}"
             th:text="${location}">
@@ -83,8 +83,7 @@
     </td>
     <td class="row-location" th:text="${tournament.course}" onclick="openGoogleMaps(this)"></td>
     <td hidden="hidden">
-      <span class="row-city" th:text="${tournament.city} + ',&nbsp;'"></span>
-      <span class="row-state" th:text="${tournament.state}"></span>
+      <div class="row-location-details" th:text="${tournament.location}"></div>
     </td>
     <td>
       <a th:if="${tournament.isRegistrationOpen | tournament.registrants != 0}"
@@ -119,8 +118,7 @@
     </td>
     <td class="row-location" th:text="${tournament.course}" onclick="openGoogleMaps(this)"></td>
     <td hidden="hidden">
-      <span class="row-city" th:text="${tournament.city} + ',&nbsp;'"></span>
-      <span class="row-state" th:text="${tournament.state}"></span>
+      <div class="row-location-details" th:text="${tournament.location}"></div>
     </td>
   </tr>
 </table>
