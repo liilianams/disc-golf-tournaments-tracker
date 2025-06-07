@@ -24,14 +24,14 @@ public class DgsScraper {
 
   private final ApplicationProperties applicationProperties;
 
-  @Cacheable(value = "tournaments", key = "#state")
-  public Elements getTournaments(String state) {
-    LOGGER.info("Getting DGS tournaments at " + Utils.getCurrentTime() + ", not using cache");
-    String url = applicationProperties.getDgsBaseUrl() + "/tournaments/" + state;
+  @Cacheable(value = "tournaments", key = "#country")
+  public Elements getTournaments(String country) {
+    LOGGER.info(String.format("Getting DGS tournaments for country %s at %s, not using cache", country, Utils.getCurrentTime()));
+    String url = applicationProperties.getDgsBaseUrl() + "/tournaments/" + country;
     try {
       Document page = applicationProperties.getIsProduction() ?
           Jsoup.connect(url).get() :
-          getTestData(state);
+          getTestData(country);
       return page.select("div#tournaments-list div.tournament-list");
     } catch (Exception e) {
       LOGGER.error(e.getMessage());

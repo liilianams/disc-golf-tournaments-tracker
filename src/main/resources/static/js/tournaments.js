@@ -1,5 +1,5 @@
 function resetFilters() {
-  document.getElementById("state-filter").selectedIndex = 0;
+  document.getElementById("country-filter").selectedIndex = 0;
   document.getElementById("month-filter").selectedIndex = 0;
   document.getElementById("tier-filter").selectedIndex = 0;
   document.getElementById("search-filter").value = "";
@@ -33,7 +33,7 @@ function filterByTier(rowTier, filterTier) {
 
 function filterTournaments() {
   const searchTerm = document.getElementById('search-filter').value.toLowerCase();
-  const stateFilter = document.getElementById('state-filter').value.toLowerCase();
+  const countryFilter = document.getElementById('country-filter').value.toLowerCase();
   const monthFilter = document.getElementById('month-filter').value.slice(0, 3).toLowerCase();
   const tierFilter = document.getElementById('tier-filter').value.toLowerCase();
 
@@ -48,7 +48,7 @@ function filterTournaments() {
 
     const matchesSearchTerm = !searchTerm || rowName.includes(searchTerm) ||
                               rowCourse.includes(searchTerm) || rowLocation.includes(searchTerm);
-    const matchesState = !stateFilter || rowState === stateFilter;
+    const matchesState = !countryFilter || rowLocation.includes(countryFilter);
     const matchesMonth = !monthFilter || rowMonth === monthFilter;
     const matchesTier = !tierFilter || filterByTier(rowTier, tierFilter);
 

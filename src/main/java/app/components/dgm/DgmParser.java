@@ -31,7 +31,7 @@ public class DgmParser {
   private final DgmScraper dgmTournamentsScraper;
 
   public List<Tournament> getTournaments() {
-    return applicationProperties.getStatesShort().stream().flatMap(countryCode -> getTournaments(countryCode).stream()).toList();
+    return applicationProperties.getCountryCodes().stream().flatMap(countryCode -> getTournaments(countryCode).stream()).toList();
   }
 
   private List<Tournament> getTournaments(String countryCode) {

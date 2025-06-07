@@ -26,12 +26,12 @@ public class DgsParser {
   private final DgsScraper tournamentsScraper;
 
   public List<Tournament> getTournaments() {
-    return applicationProperties.getStates().stream().flatMap(state -> getTournaments(state).stream()).toList();
+    return applicationProperties.getCountries().stream().flatMap(country -> getTournaments(country).stream()).toList();
   }
 
-  private List<Tournament> getTournaments(String state) {
+  private List<Tournament> getTournaments(String country) {
     try {
-      Elements tournamentsElements = tournamentsScraper.getTournaments(state);
+      Elements tournamentsElements = tournamentsScraper.getTournaments(country);
       return mapToTournaments(tournamentsElements);
     } catch (Exception e) {
       LOGGER.error(e.getMessage());

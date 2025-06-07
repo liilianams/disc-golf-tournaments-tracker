@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -23,21 +24,21 @@ public class DgmScraper {
 
   private final ApplicationProperties applicationProperties;
 
-  //  @Cacheable(value = "tournaments", key = "#stateshort")
-  public Elements getTournaments(String stateShort) {
-    LOGGER.info("Getting DGM tournaments at " + Utils.getCurrentTime() + ", not using cache");
+  @Cacheable(value = "tournaments", key = "#countryCode")
+  public Elements getTournaments(String countryCode) {
+    LOGGER.info(String.format("Getting DGM tournaments for country %s at %s, not using cache", countryCode, Utils.getCurrentTime()));
     String url = applicationProperties.getDgmBaseUrl() +
-      "competitions_list_server.php?&sort_name=date&sort_order=asc" +
-      "&country_code=" + stateShort +
+      "/competitions_list_server.php?&sort_name=date&sort_order=asc" +
+      "&country_code=" + countryCode +
       "&date1=" + Utils.getCurrentDate() +
       "&date2=" + Utils.getSameDateNextYear();
     try {
       Document page = applicationProperties.getIsProduction() ?
         Jsoup.connect(url).get() :
-        getTestData(stateShort);
+        getTestData(countryCode);
       return page.select("table.table-list.clickable tbody tr");
     } catch (Exception e) {
-      LOGGER.error(e.getMessage());
+      e.printStackTrace();
       return new Elements();
     }
   }

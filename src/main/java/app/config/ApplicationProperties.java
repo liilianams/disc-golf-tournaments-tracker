@@ -18,8 +18,8 @@ public class ApplicationProperties {
   private String dgmBaseUrl;
   private Boolean isProduction;
   private Boolean isPasswordCheckEnabled;
-  private List<String> states;
-  private List<String> statesShort;
+  private List<String> countries;
+  private List<String> countryCodes;
   private List<String> favoriteLocations;
 
 }

@@ -51,8 +51,8 @@
       <option value="nov">November</option>
       <option value="dec">December</option>
     </select>
-    <select class="filter" id="state-filter" onchange="filterTournaments()">
-      <option value="">All States</option>
+    <select class="filter" id="country-filter" onchange="filterTournaments()">
+      <option value="">All Countries</option>
       <th:block th:each="country : ${countries}">
         <option th:value="${country}" th:text="${country}"></option>
       </th:block>

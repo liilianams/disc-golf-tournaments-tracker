@@ -3,6 +3,7 @@ package app.config;
 import app.components.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.EnableCaching;
@@ -19,6 +20,9 @@ import java.util.List;
 public class CacheConfig {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CacheConfig.class);
+
+  @Autowired
+  private CacheManager cacheManager;
 
   @Bean
   public CacheManager cacheManager() {
