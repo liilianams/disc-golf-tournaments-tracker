@@ -31,11 +31,13 @@ public class HtmlBuilder {
   }
 
   String buildFavoriteTournaments(List<Tournament> tournaments) {
-    List<String> myLocations = applicationProperties.getFavoriteLocations();
+    List<String> favoriteLocations = applicationProperties.getFavoriteLocations();
     List<Tournament> favoriteTournaments = tournaments.stream()
-        .sorted(Comparator.comparing(Tournament::getDate))
-        .filter(tournament -> myLocations.contains(tournament.getCourse()))
-        .toList();
+      .sorted(Comparator.comparing(Tournament::getDate))
+      .filter(tournament ->
+        favoriteLocations.stream().anyMatch(fav -> tournament.getCourse().contains(fav))
+      )
+      .toList();
     return buildTournamentsHtml("favorite-tournaments", favoriteTournaments);
   }
 
