@@ -25,5 +25,6 @@ public class Tournament {
   private String country;
   private String location;
   private String url;
+  private String registrationUrl;
 
 }

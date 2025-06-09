@@ -95,7 +95,7 @@
     <td>
       <a th:if="${tournament.isRegistrationOpen | tournament.registrants != 0}"
          th:text="${tournament.registrants}"
-         th:href="@{|${tournament.url}/registration|}"
+         th:href="@{${tournament.registrationUrl}}"
          target="_blank"
       ></a>
     </td>

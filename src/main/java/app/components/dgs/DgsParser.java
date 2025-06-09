@@ -76,6 +76,7 @@ public class DgsParser {
         tournament.setCountry(country);
         tournament.setLocation(location);
         tournament.setUrl(url);
+        tournament.setRegistrationUrl(url + "/registration");
 
         result.add(tournament);
       } catch (Exception e) {

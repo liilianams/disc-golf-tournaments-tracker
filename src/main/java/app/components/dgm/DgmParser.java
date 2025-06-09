@@ -80,8 +80,7 @@ public class DgmParser {
 
     Tournament tournament = new Tournament();
     tournament.setName(name);
-    tournament.setUrl(url);
-    tournament.setDate(Utils.convertToLocalDate(parsedDate.dayAndMonth, Clock.fixed(Instant.now(), ZoneId.of("UTC"))));
+    tournament.setDate(Utils.convertToLocalDate(parsedDate.dayAndMonth(), Clock.fixed(Instant.now(), ZoneId.of("UTC"))));
     tournament.setDateString(dateString);
     tournament.setDayAndMonth(dayAndMonth);
     tournament.setDayOfWeek(dayOfWeek);
@@ -93,6 +92,8 @@ public class DgmParser {
     tournament.setCountry(country);
     tournament.setRegistrants(registrants);
     tournament.setIsRegistrationOpen(isRegistrationOpen);
+    tournament.setUrl(url);
+    tournament.setRegistrationUrl(url + "&view=registration");
 
     return tournament;
   }
