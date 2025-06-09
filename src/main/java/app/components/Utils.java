@@ -45,8 +45,8 @@ public class Utils {
 
     try {
       if (isDateRange(dateString)) {
-        month = getParseMonthFromDateRange(dateString);
-        day = getParseDayFromDateRange(dateString);
+        month = parseStartMonthFromDateRange(dateString);
+        day = parseStartDayFromDateRange(dateString);
       } else {
         String[] dateParts = dateString.split(" ");
         month = MONTH_ABBREVIATIONS.get(dateParts[0].toUpperCase());
@@ -67,22 +67,7 @@ public class Utils {
     }
   }
 
-  private Month getParseMonthFromDateRange(String dateString) throws IllegalArgumentException {
-    String[] dates = dateString.split("-");
-    String[] startDateParts = dates[0].trim().split(" ");
-    String[] endDateParts = dates[1].trim().split(" ");
-
-    String monthStr = endDateParts.length < 2 ? startDateParts[0].trim() : endDateParts[0].trim();
-
-    Month month = MONTH_ABBREVIATIONS.get(monthStr.toUpperCase());
-    if (month == null) {
-      throw new IllegalArgumentException("Invalid month abbreviation: " + monthStr);
-    }
-
-    return month;
-  }
-
-  private int getParseDayFromDateRange(String dateString) throws IllegalArgumentException {
+  private Month parseStartMonthFromDateRange(String dateString) throws IllegalArgumentException {
     String[] dates = dateString.split("-");
 
     if (dates.length < 2) {
@@ -90,13 +75,26 @@ public class Utils {
     }
 
     String[] startDateParts = dates[0].trim().split(" ");
-    String[] endDateParts = dates[1].trim().split(" ");
+    Month month = MONTH_ABBREVIATIONS.get(startDateParts[0].trim().toUpperCase());
 
-    String dayStr = endDateParts.length == 0 ?
-      startDateParts[1].trim() :
-      endDateParts.length < 2 ? endDateParts[0] : endDateParts[1];
+    if (month == null) {
+      throw new IllegalArgumentException("Invalid month abbreviation: " + startDateParts[0].trim());
+    }
 
-    return Integer.parseInt(dayStr);
+    return month;
+  }
+
+  private int parseStartDayFromDateRange(String dateString) throws IllegalArgumentException {
+    String[] dates = dateString.split("-");
+
+    if (dates.length < 2) {
+      throw new IllegalArgumentException("Invalid date string: " + dateString);
+    }
+
+    String[] startDateParts = dates[0].trim().split(" ");
+    String dayString = startDateParts[1].trim();
+
+    return Integer.parseInt(dayString);
   }
 
   /**
