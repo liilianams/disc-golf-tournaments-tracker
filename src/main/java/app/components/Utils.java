@@ -62,7 +62,7 @@ public class Utils {
 
       return parsedDate;
     } catch (IllegalArgumentException e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error("Failed to convert dateString {} to localDate: {} ", dateString, e.getMessage());
       return null;
     }
   }
@@ -71,7 +71,7 @@ public class Utils {
     String[] dates = dateString.split("-");
 
     if (dates.length < 2) {
-      throw new IllegalArgumentException("Invalid date string: " + dateString);
+      throw new IllegalArgumentException("Invalid date string format: " + dateString);
     }
 
     String[] startDateParts = dates[0].trim().split(" ");
@@ -88,7 +88,7 @@ public class Utils {
     String[] dates = dateString.split("-");
 
     if (dates.length < 2) {
-      throw new IllegalArgumentException("Invalid date string: " + dateString);
+      throw new IllegalArgumentException("Invalid date string format: " + dateString);
     }
 
     String[] startDateParts = dates[0].trim().split(" ");

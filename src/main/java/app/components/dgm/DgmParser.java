@@ -15,9 +15,9 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,31 +30,25 @@ public class DgmParser {
   private final ApplicationProperties applicationProperties;
   private final DgmScraper dgmTournamentsScraper;
 
-  public List<Tournament> getTournaments() {
-    return applicationProperties.getCountryCodes().stream().flatMap(countryCode -> getTournaments(countryCode).stream()).toList();
+  public List<Tournament> parseTournaments() {
+    return applicationProperties.getCountryCodes()
+      .stream()
+      .flatMap(countryCode -> parseTournaments(countryCode).stream())
+      .toList();
   }
 
-  private List<Tournament> getTournaments(String countryCode) {
+  private List<Tournament> parseTournaments(String countryCode) {
     try {
       Elements tournamentsElements = dgmTournamentsScraper.getTournaments(countryCode);
       return parseTournaments(tournamentsElements, countryCode);
     } catch (Exception e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error("Failed to parse DGM tournaments for country {}: {}", countryCode, e.getMessage());
       return List.of();
     }
   }
 
   private List<Tournament> parseTournaments(Elements elements, String countryCode) {
-    List<Tournament> tournaments = new ArrayList<>();
-
-    for (Element element : elements) {
-      Tournament tournament = mapToTournament(element, countryCode);
-      if (tournament != null) {
-        tournaments.add(tournament);
-      }
-    }
-
-    return tournaments;
+    return elements.stream().map(element -> mapToTournament(element, countryCode)).filter(Objects::nonNull).toList();
   }
 
   private Tournament mapToTournament(Element element, String countryCode) {
@@ -175,13 +169,7 @@ public class DgmParser {
   }
 
   private Integer getRegistrants(String registrantsString) {
-    Integer registrants = null;
-    try {
-      registrants = Integer.parseInt(registrantsString);
-    } catch (NumberFormatException e) {
-      LOGGER.error(e.getMessage());
-    }
-    return registrants;
+    return Integer.parseInt(registrantsString);
   }
 
   public record ParsedDate(String dayAndMonth, String dayOfWeek) {

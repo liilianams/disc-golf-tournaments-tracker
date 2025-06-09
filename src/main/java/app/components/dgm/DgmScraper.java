@@ -26,7 +26,7 @@ public class DgmScraper {
 
   @Cacheable(value = "tournaments", key = "#countryCode")
   public Elements getTournaments(String countryCode) {
-    LOGGER.info("Getting DGM tournaments for country {} at {} not using cache", countryCode, Utils.getCurrentTime());
+    LOGGER.info("Getting DGM tournaments for country {} at {}, not using cache", countryCode, Utils.getCurrentTime());
     String url = applicationProperties.getDgmBaseUrl() +
       "/competitions_list_server.php?sort_name=date&sort_order=asc" +
       "&country_code=" + countryCode +

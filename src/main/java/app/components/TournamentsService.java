@@ -26,8 +26,8 @@ public class TournamentsService {
   }
 
   private List<Tournament> getTournaments() {
-    List<Tournament> dgsTournaments = dgsTournamentsService.getTournaments();
-    List<Tournament> dgmTournaments = dgmTournamentsParser.getTournaments();
+    List<Tournament> dgsTournaments = dgsTournamentsService.parseTournaments();
+    List<Tournament> dgmTournaments = dgmTournamentsParser.parseTournaments();
 
     List<Tournament> allTournaments = new ArrayList<>();
     allTournaments.addAll(dgsTournaments);

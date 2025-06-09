@@ -49,7 +49,7 @@ public class DgsScraper {
   }
 
   private void retryInFiveMinutes(String country) {
-    LOGGER.warn("Scheduling a retry for country {} in 5 minutes.", country);
+    LOGGER.warn("Scheduling a retry for country {} in 5 minutes", country);
 
     scheduler.schedule(
       () -> {

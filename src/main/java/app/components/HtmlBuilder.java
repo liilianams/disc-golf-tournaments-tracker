@@ -26,7 +26,9 @@ public class HtmlBuilder {
   private final ServletContext servletContext;
 
   String buildAllTournaments(List<Tournament> tournaments) {
-    List<Tournament> sortedTournaments = tournaments.stream().sorted(Comparator.comparing(Tournament::getDate)).toList();
+    List<Tournament> sortedTournaments = tournaments.stream()
+      .sorted(Comparator.comparing(Tournament::getDate).thenComparing(Tournament::getName))
+      .toList();
     return buildTournamentsHtml("tournaments", sortedTournaments);
   }
 
@@ -49,10 +51,10 @@ public class HtmlBuilder {
     List<String> courses = sortedTournaments.stream().map(Tournament::getCourse).distinct().sorted().toList();
     List<String> countries = sortedTournaments.stream().map(Tournament::getCountry).distinct().sorted().toList();
     Map<String, Object> contextParams = Map.of(
-        "tournaments", sortedTournaments,
-        "favoriteLocations", applicationProperties.getFavoriteLocations(),
-        "courses", courses,
-        "countries", countries
+      "tournaments", sortedTournaments,
+      "favoriteLocations", applicationProperties.getFavoriteLocations(),
+      "courses", courses,
+      "countries", countries
     );
     return buildHtml(templateName, contextParams);
   }
@@ -60,7 +62,13 @@ public class HtmlBuilder {
   private String buildHtml(String templateName, Map<String, Object> contextParams) {
     // Create Thymeleaf context
     ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-    WebContext ctx = new WebContext(attrs.getRequest(), attrs.getResponse(), servletContext, attrs.getRequest().getLocale());
+    assert attrs != null;
+    WebContext ctx = new WebContext(
+      attrs.getRequest(),
+      attrs.getResponse(),
+      servletContext,
+      attrs.getRequest().getLocale()
+    );
     ctx.setVariables(contextParams);
 
     // Get the template

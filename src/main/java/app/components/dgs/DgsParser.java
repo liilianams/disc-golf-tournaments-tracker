@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -25,65 +25,64 @@ public class DgsParser {
   private final ApplicationProperties applicationProperties;
   private final DgsScraper tournamentsScraper;
 
-  public List<Tournament> getTournaments() {
-    return applicationProperties.getCountries().stream().flatMap(country -> getTournaments(country).stream()).toList();
+  public List<Tournament> parseTournaments() {
+    return applicationProperties.getCountries()
+      .stream()
+      .flatMap(country -> parseTournaments(country).stream())
+      .toList();
   }
 
-  private List<Tournament> getTournaments(String country) {
+  private List<Tournament> parseTournaments(String country) {
     try {
       Elements tournamentsElements = tournamentsScraper.getTournaments(country);
-      return mapToTournaments(tournamentsElements);
+      return parseTournaments(tournamentsElements);
     } catch (Exception e) {
-      LOGGER.error(e.getMessage());
+      LOGGER.error("Failed to parse DGM tournaments for country {}: {}", country, e.getMessage());
       return List.of();
     }
   }
 
-  public List<Tournament> mapToTournaments(Elements tournamentsElements) {
-    List<Tournament> result = new ArrayList<>();
-    for (Element element : tournamentsElements) {
-      try {
-        String name = element.select("span.name").text();
+  public List<Tournament> parseTournaments(Elements elements) {
+    return elements.stream().map(this::mapToTournament).filter(Objects::nonNull).toList();
+  }
 
-        ParsedDate parsedDate = getDate(element);
-        String dayAndMonth = parsedDate.dayAndMonth();
-        String dayOfWeek = parsedDate.dayOfWeek();
+  private Tournament mapToTournament(Element element) {
+    String name = element.select("span.name").text();
 
-        String tier = getTier(element);
-        String url = getUrl(element);
+    ParsedDate parsedDate = getDate(element);
+    String dayAndMonth = parsedDate.dayAndMonth();
+    String dayOfWeek = parsedDate.dayOfWeek();
 
-        String location = element.select("span.info i.fa-map-marker-alt").first().parent().ownText();
-        String course = element.select("span.info i.fa-map").first().parent().ownText();
-        String[] cityState = location.split(", ");
-        String city = cityState.length > 0 ? cityState[0] : "N/A";
-        String country = cityState.length > 1 ? cityState[1] : "N/A";
+    String tier = getTier(element);
+    String url = getUrl(element);
 
-        boolean isRegistrationOpen = isRegistrationOpen(element);
-        int registrants = getRegistrants(element);
+    String location = element.select("span.info i.fa-map-marker-alt").first().parent().ownText();
+    String course = element.select("span.info i.fa-map").first().parent().ownText();
+    String[] cityState = location.split(", ");
+    String city = cityState.length > 0 ? cityState[0] : "N/A";
+    String country = cityState.length > 1 ? cityState[1] : "N/A";
 
-        Tournament tournament = new Tournament();
-        tournament.setName(name);
-        tournament.setDate(Utils.convertToLocalDate(parsedDate.dayAndMonth, Clock.fixed(Instant.now(), ZoneId.of("UTC"))));
-        tournament.setDayOfWeek(dayOfWeek);
-        tournament.setDayAndMonth(dayAndMonth);
-        tournament.setDateString(parsedDate.toString());
-        tournament.setRegistrants(registrants);
-        tournament.setIsRegistrationOpen(isRegistrationOpen);
-        tournament.setTier(tier);
-        tournament.setCourse(course);
-        tournament.setCity(city);
-        tournament.setState("");
-        tournament.setCountry(country);
-        tournament.setLocation(location);
-        tournament.setUrl(url);
-        tournament.setRegistrationUrl(url + "/registration");
+    boolean isRegistrationOpen = isRegistrationOpen(element);
+    int registrants = getRegistrants(element);
 
-        result.add(tournament);
-      } catch (Exception e) {
-        LOGGER.error(e.getMessage());
-      }
-    }
-    return result;
+    Tournament tournament = new Tournament();
+    tournament.setName(name);
+    tournament.setDate(Utils.convertToLocalDate(parsedDate.dayAndMonth, Clock.fixed(Instant.now(), ZoneId.of("UTC"))));
+    tournament.setDayOfWeek(dayOfWeek);
+    tournament.setDayAndMonth(dayAndMonth);
+    tournament.setDateString(parsedDate.toString());
+    tournament.setRegistrants(registrants);
+    tournament.setIsRegistrationOpen(isRegistrationOpen);
+    tournament.setTier(tier);
+    tournament.setCourse(course);
+    tournament.setCity(city);
+    tournament.setState("");
+    tournament.setCountry(country);
+    tournament.setLocation(location);
+    tournament.setUrl(url);
+    tournament.setRegistrationUrl(url + "/registration");
+
+    return tournament;
   }
 
   private String getUrl(Element element) {
@@ -92,14 +91,10 @@ public class DgsParser {
   }
 
   private int getRegistrants(Element element) {
-    try {
-      Element regElement = element.select("i.fa-user-group + b").first();
-      if (regElement != null) {
-        String[] parts = regElement.text().split("/");
-        return Integer.parseInt(parts[0].trim());
-      }
-    } catch (Exception e) {
-      LOGGER.error(e.getMessage());
+    Element regElement = element.select("i.fa-user-group + b").first();
+    if (regElement != null) {
+      String[] parts = regElement.text().split("/");
+      return Integer.parseInt(parts[0].trim());
     }
     return 0;
   }
