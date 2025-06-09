@@ -17,8 +17,8 @@ class UtilsTest {
   @CsvSource({
       "Sep 1,         2024-09-01",  // If day of month < current day of month, then date is next year
       "Sep 10,        2023-09-10",  // date == current date
-      "Sep 29-Oct 1,  2023-10-01",  // If last day of month > current day of month, then date is this year
-      "Oct 1-4,       2023-10-04"   // If last day of month > current day of month, then date is this year
+      "Sep 29-Oct 1,  2023-09-29",  // If date range, then use start date
+      "Oct 1-4,       2023-10-01"   // If date range, then use start date
   })
   void convertToLocalDate(String givenDateString, String expectedDateString) {
     // Given when

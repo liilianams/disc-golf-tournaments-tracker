@@ -22,8 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class TournamentsServiceTest {
 
   @Mock
-  private HtmlBuilder htmlBuilder;
-  @Mock
   private DgsScraper tournamentsScraper;
 
   private DgsParser tournamentsService;
@@ -32,7 +30,7 @@ class TournamentsServiceTest {
   void setUp() {
     ApplicationProperties props = new ApplicationProperties();
     props.setFavoriteLocations(List.of());
-    tournamentsService = new DgsParser(props, htmlBuilder, tournamentsScraper);
+    tournamentsService = new DgsParser(props, tournamentsScraper);
   }
 
   @ParameterizedTest(name = "Given date string {0}, then local date is {1}")
@@ -139,7 +137,7 @@ class TournamentsServiceTest {
     Elements tournamentsElements = page.select("div#tournaments-list div.tournament-list");
 
     // When
-    List<Tournament> tournaments = tournamentsService.mapToTournaments(tournamentsElements);
+    List<Tournament> tournaments = tournamentsService.parseTournaments(tournamentsElements);
 
     // Then
     assertThat(tournaments).hasSize(2);
@@ -157,14 +155,16 @@ class TournamentsServiceTest {
     assertThat(tournament.getIsRegistrationOpen()).isTrue();
     assertThat(tournament.getCourse()).isEqualTo("Tallinn Song Festival Grounds");
     assertThat(tournament.getCity()).isEqualTo("Tallinn");
-    assertThat(tournament.getState()).isEqualTo("Estonia");
+    assertThat(tournament.getState()).isEqualTo("");
+    assertThat(tournament.getCountry()).isEqualTo("Estonia");
     assertThat(tournament.getUrl()).isEqualTo("https://www.discgolfscene.com/tournaments/Monday_Qualifier_for_the_Coolbet_presents_European_Disc_Golf_Festival_2025_PDGA_Major");
+    assertThat(tournament.getRegistrationUrl()).isEqualTo("https://www.discgolfscene.com/tournaments/Monday_Qualifier_for_the_Coolbet_presents_European_Disc_Golf_Festival_2025_PDGA_Major/registration");
 
     Tournament tournament2 = tournaments.get(1);
     assertThat(tournament2.getName()).isEqualTo("Coolbet presents: European Disc Golf Festival 2025");
     assertThat(tournament2.getTier()).isEqualTo("Major");
     assertThat(tournament2.getDate().getMonthValue()).isEqualTo(7);
-    assertThat(tournament2.getDate().getDayOfMonth()).isEqualTo(20);
+    assertThat(tournament2.getDate().getDayOfMonth()).isEqualTo(17);
     assertThat(tournament2.getDateString()).isEqualTo("Jul 17-20 Thu-Sun");
     assertThat(tournament2.getDayAndMonth()).isEqualTo("Jul 17-20");
     assertThat(tournament2.getDayOfWeek()).isEqualTo("Thu-Sun");
@@ -172,7 +172,9 @@ class TournamentsServiceTest {
     assertThat(tournament2.getRegistrants()).isEqualTo(156);
     assertThat(tournament2.getCourse()).isEqualTo("Tallinn Song Festival Grounds");
     assertThat(tournament2.getCity()).isEqualTo("Tallinn");
-    assertThat(tournament2.getState()).isEqualTo("Estonia");
+    assertThat(tournament.getState()).isEqualTo("");
+    assertThat(tournament.getCountry()).isEqualTo("Estonia");
     assertThat(tournament2.getUrl()).isEqualTo("https://www.discgolfscene.com/tournaments/European_Disc_Golf_Festival_2025");
+    assertThat(tournament2.getRegistrationUrl()).isEqualTo("https://www.discgolfscene.com/tournaments/European_Disc_Golf_Festival_2025/registration");
   }
 }
