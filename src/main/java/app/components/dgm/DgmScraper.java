@@ -26,19 +26,24 @@ public class DgmScraper {
 
   @Cacheable(value = "tournaments", key = "#countryCode")
   public Elements getTournaments(String countryCode) {
-    LOGGER.info(String.format("Getting DGM tournaments for country %s at %s, not using cache", countryCode, Utils.getCurrentTime()));
+    LOGGER.info("Getting DGM tournaments for country {} at {} not using cache", countryCode, Utils.getCurrentTime());
     String url = applicationProperties.getDgmBaseUrl() +
-      "/competitions_list_server.php?&sort_name=date&sort_order=asc" +
+      "/competitions_list_server.php?sort_name=date&sort_order=asc" +
       "&country_code=" + countryCode +
       "&date1=" + Utils.getCurrentDate() +
       "&date2=" + Utils.getSameDateNextYear();
+
+    if (!"EE".equalsIgnoreCase(countryCode)) {
+      url += "&type=pdga";
+    }
+
     try {
       Document page = applicationProperties.getIsProduction() ?
         Jsoup.connect(url).get() :
         getTestData(countryCode);
       return page.select("table.table-list.clickable tbody tr");
     } catch (Exception e) {
-      e.printStackTrace();
+      LOGGER.error("Failed to retrieve data for country {}: {}", countryCode, e.getMessage());
       return new Elements();
     }
   }
